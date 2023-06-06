@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Tests.Smoke", "PdHelpers.Tests.Smoke\PdHelpers.Tests.Smoke.csproj", "{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PdHelpers.Shared", "PdHelpers.Shared\PdHelpers.Shared.shproj", "{DD0FD09C-3187-4ED3-8AD2-F6BB287433D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Refit", "PdHelpers.Refit\PdHelpers.Refit.csproj", "{987AED31-4A9B-4820-9481-D39DA26DAB2D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Mvc", "PdHelpers.Mvc\PdHelpers.Mvc.csproj", "{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6E3CADFB-0532-4F1C-AF9A-950A8C79565F}"
+	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
+		README.md = README.md
+		TheXamarinFiles\The-Xamarin-Files.png = TheXamarinFiles\The-Xamarin-Files.png
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D6138E5-80E6-4103-B199-1C6624BADCF2}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		PdHelpers.Shared\PdHelpers.Shared.projitems*{6da5bd39-c07a-44da-ae90-9b86f5fc82d6}*SharedItemsImports = 5
+		..\library-fancy-logger-extensions\FancyLogger.Extensions\FancyLogger.Extensions.projitems*{8649dc2e-3fa6-47a9-8dc1-b9fd5681fc76}*SharedItemsImports = 5
+		PdHelpers.Shared\PdHelpers.Shared.projitems*{987aed31-4a9b-4820-9481-d39da26dab2d}*SharedItemsImports = 5
+		PdHelpers.Shared\PdHelpers.Shared.projitems*{dd0fd09c-3187-4ed3-8ad2-f6bb287433d0}*SharedItemsImports = 13
+	EndGlobalSection
+EndGlobal

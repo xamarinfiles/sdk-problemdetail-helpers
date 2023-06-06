@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>1.0.2</Version>
+    <Copyright>Copyright © 2023 The Xamarin Files, Andy Lech</Copyright>
+    <TargetFrameworks>netstandard2.0;net6.0;net7.0</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <Company>TheXamarinFiles</Company>
+    <Authors>TheXamarinFiles, Andy Lech</Authors>
+    <Title>
+      A .NET library to create ProblemDetails (IETF RFC 7807) objects from scratch or pull from exceptions
+    </Title>
+    <Description>
+      A .NET library to create ProblemDetails (IETF RFC 7807) objects from scratch or pull from exceptions
+    </Description>
+    <RepositoryUrl>https://github.com/xamarinfiles/library-problemdetails-helpers</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/xamarinfiles/library-problemdetails-helpers</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>The-Xamarin-Files.png</PackageIcon>
+    <AssemblyName>XamarinFiles.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>XamarinFiles.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <AnalysisLevel>6.0-all</AnalysisLevel>
+  </PropertyGroup>
+
+  <Import Project="..\PdHelpers.Shared\PdHelpers.Shared.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <Visible>False</Visible>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <Visible>False</Visible>
+    </None>
+    <None Include="..\TheXamarinFiles\The-Xamarin-Files.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+      <Visible>False</Visible>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Refit" Version="6.3.2" />
+    <PackageReference Include="System.Text.Json" Version="7.0.2" />
+  </ItemGroup>
+
+</Project>

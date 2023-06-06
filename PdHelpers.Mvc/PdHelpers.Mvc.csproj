@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
+    <LangVersion>9.0</LangVersion>
+    <AssemblyName>XamarinFiles.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>XamarinFiles.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+  </PropertyGroup>
+
+  <Import Project="..\PdHelpers.Shared\PdHelpers.Shared.projitems" Label="Shared" />
+
+</Project>
