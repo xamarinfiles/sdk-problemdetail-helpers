@@ -1,15 +1,21 @@
-﻿using System;
+﻿#define ASSEMBLY_LOGGING
+
+using System;
 using System.Diagnostics;
 using XamarinFiles.FancyLogger;
 using XamarinFiles.FancyLogger.Extensions;
-using static System.Net.HttpStatusCode;
+using XamarinFiles.FancyLogger.Options;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
+using static System.Net.HttpStatusCode;
 
-namespace XamarinFiles.PdHelpers.Tests.Smoke
+namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
 {
-    internal class Program
+    internal static class Program
     {
         #region Fields
+
+        // TODO Set to same default as FancyLoggerOptions.AllLines.PrefixString
+        private const string DefaultLogPrefix = "LOG";
 
         private const string LoginFailedTitle = "Invalid Credentials";
 
@@ -18,13 +24,17 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke
             "Please check your Username and Password and try again"
         };
 
+        private const string RootAssemblyNamespace = "XamarinFiles.PdHelpers.";
+
         #endregion
 
         #region Services
 
-        private static FancyLoggerService? LoggerService { get; }
+        private static IFancyLogger? FancyLogger { get; }
 
-        private static AssemblyLoggerService? AssemblyLoggerService { get; }
+#if ASSEMBLY_LOGGING
+        private static AssemblyLogger? AssemblyLogger { get; }
+#endif
 
         #endregion
 
@@ -34,14 +44,24 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke
         {
             try
             {
-                LoggerService = new FancyLoggerService();
-                AssemblyLoggerService = new AssemblyLoggerService(LoggerService);
+                var assembly = typeof(Program).Assembly;
+
+                // ReSharper disable once UseObjectOrCollectionInitializer
+                var options = new FancyLoggerOptions();
+                options.AllLines.PrefixString =
+                    LogPrefixHelper.GetAssemblyNameTail(assembly,
+                        RootAssemblyNamespace, DefaultLogPrefix);
+
+                FancyLogger = new FancyLogger.FancyLogger(loggerOptions: options);
+#if ASSEMBLY_LOGGING
+                AssemblyLogger = new AssemblyLogger(FancyLogger);
+#endif
             }
             catch (Exception exception)
             {
-                if (LoggerService is not null)
+                if (FancyLogger is not null)
                 {
-                    LoggerService.LogExceptionRouter(exception);
+                    FancyLogger.LogException(exception);
                 }
                 else
                 {
@@ -57,26 +77,27 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke
         {
             try
             {
-                /* WARNING - Requires shared project from another repo \/\/\/\/\/ */
-
-                AssemblyLoggerService?.LogAssemblies(showCultureInfo: false);
-
-                LoggerService?.LogHeader("PdHelpers Tests");
-
-                /* /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-
-                if (LoggerService is null)
+                if (FancyLogger is null)
                 {
                     return;
                 }
 
+#if ASSEMBLY_LOGGING
+                AssemblyLogger?.LogAssemblies(showCultureInfo: true);
+#endif
+
+                FancyLogger.LogSection("Run PdHelpers Refit Tests");
+
+
                 GenerateGeneralProblemDetails();
+
                 GenerateJsonProblemDetails();
+
                 GenerateLoginProblemDetails();
             }
             catch (Exception exception)
             {
-                LoggerService?.LogExceptionRouter(exception);
+                FancyLogger?.LogException(exception);
             }
         }
 
@@ -100,7 +121,7 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke
                     detail : "Invalid fields: Username, Password",
                     userMessages: LoginFailedUserMessages);
 
-            LoggerService!.LogProblemDetails(badRequestProblem);
+            FancyLogger!.LogProblemDetails(badRequestProblem);
 
             // 403 - Forbidden
 
@@ -110,7 +131,7 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke
                     detail: "Username and/or Password do not match",
                     userMessages: LoginFailedUserMessages);
 
-            LoggerService.LogProblemDetails(usernameNotFoundProblem);
+            FancyLogger.LogProblemDetails(usernameNotFoundProblem);
         }
     }
 }

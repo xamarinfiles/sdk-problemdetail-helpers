@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33424.131
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Tests.Smoke", "PdHelpers.Tests.Smoke\PdHelpers.Tests.Smoke.csproj", "{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PdHelpers.Shared", "PdHelpers.Shared\PdHelpers.Shared.shproj", "{DD0FD09C-3187-4ED3-8AD2-F6BB287433D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Refit", "PdHelpers.Refit\PdHelpers.Refit.csproj", "{987AED31-4A9B-4820-9481-D39DA26DAB2D}"
@@ -18,16 +16,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TheXamarinFiles\The-Xamarin-Files.png = TheXamarinFiles\The-Xamarin-Files.png
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvc", "Mvc", "{7859B5B3-AB0C-4EA2-9F98-0CB16D91079A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Refit", "Refit", "{737B5EC5-E29D-4D2F-8C54-602B16B9EA5F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Tests.Smoke.Refit.Local", "PdHelpers.Tests.Smoke.Refit.Local\PdHelpers.Tests.Smoke.Refit.Local.csproj", "{E22006EF-0DB9-4437-9257-294B9DF3D0F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PdHelpers.Tests.Smoke.Refit.NuGet", "PdHelpers.Tests.Smoke.Refit.NuGet\PdHelpers.Tests.Smoke.Refit.NuGet.csproj", "{9AA04132-EA66-4373-8EB8-CF2B85C195AC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8649DC2E-3FA6-47A9-8DC1-B9FD5681FC76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{987AED31-4A9B-4820-9481-D39DA26DAB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -36,16 +38,29 @@ Global
 		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E22006EF-0DB9-4437-9257-294B9DF3D0F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E22006EF-0DB9-4437-9257-294B9DF3D0F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E22006EF-0DB9-4437-9257-294B9DF3D0F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E22006EF-0DB9-4437-9257-294B9DF3D0F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AA04132-EA66-4373-8EB8-CF2B85C195AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AA04132-EA66-4373-8EB8-CF2B85C195AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AA04132-EA66-4373-8EB8-CF2B85C195AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AA04132-EA66-4373-8EB8-CF2B85C195AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{987AED31-4A9B-4820-9481-D39DA26DAB2D} = {737B5EC5-E29D-4D2F-8C54-602B16B9EA5F}
+		{6DA5BD39-C07A-44DA-AE90-9B86F5FC82D6} = {7859B5B3-AB0C-4EA2-9F98-0CB16D91079A}
+		{E22006EF-0DB9-4437-9257-294B9DF3D0F9} = {737B5EC5-E29D-4D2F-8C54-602B16B9EA5F}
+		{9AA04132-EA66-4373-8EB8-CF2B85C195AC} = {737B5EC5-E29D-4D2F-8C54-602B16B9EA5F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D6138E5-80E6-4103-B199-1C6624BADCF2}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		PdHelpers.Shared\PdHelpers.Shared.projitems*{6da5bd39-c07a-44da-ae90-9b86f5fc82d6}*SharedItemsImports = 5
-		..\library-fancy-logger-extensions\FancyLogger.Extensions\FancyLogger.Extensions.projitems*{8649dc2e-3fa6-47a9-8dc1-b9fd5681fc76}*SharedItemsImports = 5
 		PdHelpers.Shared\PdHelpers.Shared.projitems*{987aed31-4a9b-4820-9481-d39da26dab2d}*SharedItemsImports = 5
 		PdHelpers.Shared\PdHelpers.Shared.projitems*{dd0fd09c-3187-4ed3-8ad2-f6bb287433d0}*SharedItemsImports = 13
 	EndGlobalSection
