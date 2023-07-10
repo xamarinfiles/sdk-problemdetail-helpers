@@ -5,8 +5,9 @@ using System.Diagnostics;
 using XamarinFiles.FancyLogger;
 using XamarinFiles.FancyLogger.Extensions;
 using XamarinFiles.FancyLogger.Options;
-using static XamarinFiles.PdHelpers.Refit.Bundlers;
 using static System.Net.HttpStatusCode;
+using static XamarinFiles.FancyLogger.Enums.ErrorOrWarning;
+using static XamarinFiles.PdHelpers.Refit.Bundlers;
 
 namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
 {
@@ -113,25 +114,32 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
 
         private static void GenerateLoginProblemDetails()
         {
-            // 400 - BadRequest
+            // 400 - BadRequest - Error
 
             var badRequestProblem =
                 BundleRefitProblemDetails(BadRequest,
                     title: LoginFailedTitle,
-                    detail : "Invalid fields: Username, Password",
+                    detail: "Invalid fields: Username, Password",
+                    developerMessages: new[]
+                    {
+                        "The Username field is required.",
+                        "The Password field is required."
+                    },
                     userMessages: LoginFailedUserMessages);
 
-            FancyLogger!.LogProblemDetails(badRequestProblem);
+            FancyLogger!.LogProblemDetails(badRequestProblem, Error);
 
-            // 403 - Forbidden
+            // 401 - Unauthorized - Warning
 
-            var usernameNotFoundProblem =
-                BundleRefitProblemDetails(Forbidden,
+            var unauthorizedProblem =
+                BundleRefitProblemDetails(Unauthorized,
                     title: LoginFailedTitle,
-                    detail: "Username and/or Password do not match",
+                    detail : "Username and/or Password do not match",
                     userMessages: LoginFailedUserMessages);
 
-            FancyLogger.LogProblemDetails(usernameNotFoundProblem);
+            FancyLogger.LogProblemDetails(unauthorizedProblem, Warning);
+
+            // TODO Add other ProblemDetails tests from other repo
         }
     }
 }

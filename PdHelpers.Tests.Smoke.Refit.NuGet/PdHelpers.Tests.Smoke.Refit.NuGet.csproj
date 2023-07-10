@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.0.2" />
-    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="1.0.4" />
+    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.0.4" />
+    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="1.0.5" />
   </ItemGroup>
 
 </Project>
