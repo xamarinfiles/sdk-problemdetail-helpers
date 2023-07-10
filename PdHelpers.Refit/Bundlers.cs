@@ -18,24 +18,15 @@ namespace XamarinFiles.PdHelpers.Refit
         )
         {
             var statusCodeInt = (int)statusCode;
-            string type = null;
-
-            if (HttpStatusDetails.ContainsKey(statusCodeInt))
-            {
-                title ??= HttpStatusDetails[statusCodeInt].Title;
-                type = HttpStatusDetails[statusCodeInt].Type;
-            }
-            else
-            {
-                title = statusCode.ToString();
-            }
+            var statusCodeDetails =
+                GetHttpStatusDetails(statusCodeInt);
 
             var problemDetails = new RefitProblemDetails
             {
-                Status = statusCodeInt,
-                Title = title,
+                Status = statusCodeDetails.Code,
+                Title = title ?? statusCodeDetails.Title,
+                Type = statusCodeDetails.Type,
                 Detail = detail,
-                Type = type,
                 Instance = instance
             };
 

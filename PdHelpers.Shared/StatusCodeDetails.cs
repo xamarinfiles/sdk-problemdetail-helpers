@@ -14,7 +14,16 @@ namespace XamarinFiles.PdHelpers.Shared
 
     public static class StatusCodeDetails
     {
-        public static readonly Dictionary<int, (int Code, string Title, string Type)>
+        public static (int Code, string Title, string Type)
+            GetHttpStatusDetails(int statusCodeInt)
+        {
+            return HttpStatusDetails.TryGetValue(statusCodeInt,
+                out var statusCodeDetails)
+                ? statusCodeDetails
+                : HttpStatusDetails[(int)InternalServerError];
+        }
+
+        private static readonly Dictionary<int, (int Code, string Title, string Type)>
             HttpStatusDetails =
                 new Dictionary<int, (int Code, string Title, string Type)>
                 {
