@@ -8,8 +8,6 @@ using RefitProblemDetails = Refit.ProblemDetails;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
-    //[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    //[SuppressMessage("ReSharper", "UnusedType.Global")]
     public static class Extractors
     {
         public static RefitProblemDetails
@@ -40,26 +38,23 @@ namespace XamarinFiles.PdHelpers.Refit
 
             problemDetails =
                 BundleRefitProblemDetails(InternalServerError,
+                    exceptionMessages: exceptionMessages,
                     developerMessages: developerMessages,
-                    userMessages: userMessages,
-                    exceptionMessages: exceptionMessages);
+                    userMessages: userMessages);
 
             return problemDetails;
         }
 
+        // TODO Make Debug only?
         // TODO Extend for AggregateExceptions and others
         private static string[] ExtractExceptionMessages(Exception exception)
         {
-            List<string> exceptionMessages = new List<string>();
-
-#if DEBUG
-            exceptionMessages.Add(exception.Message);
+            var exceptionMessages = new List<string> { exception.Message };
 
             if (exception.InnerException is { } innerException)
             {
                 exceptionMessages.Add(innerException.Message);
             }
-#endif
 
             return exceptionMessages.ToArray();
         }

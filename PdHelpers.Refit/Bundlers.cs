@@ -1,12 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using static XamarinFiles.PdHelpers.Shared.StatusCodeDetails;
 using RefitProblemDetails = Refit.ProblemDetails;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
-    //[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
-    //[SuppressMessage("ReSharper", "UnusedType.Global")]
     public static class Bundlers
     {
         public static RefitProblemDetails
@@ -15,9 +12,9 @@ namespace XamarinFiles.PdHelpers.Refit
             string title = null,
             string detail = null,
             string instance = null,
+            string[] exceptionMessages = null,
             string[] developerMessages = null,
-            string[] userMessages = null,
-            string[] exceptionMessages = null
+            string[] userMessages = null
         )
         {
             var statusCodeInt = (int)statusCode;
@@ -42,17 +39,17 @@ namespace XamarinFiles.PdHelpers.Refit
                 Instance = instance
             };
 
-            if (developerMessages != null)
+            if (exceptionMessages?.Length > 0)
+                problemDetails.Errors.Add("exceptionMessages",
+                    exceptionMessages);
+
+            if (developerMessages?.Length > 0)
                 problemDetails.Errors.Add("developerMessages",
                     developerMessages);
 
-            if (userMessages != null)
+            if (userMessages?.Length > 0)
                 problemDetails.Errors.Add("userMessages",
                     userMessages);
-
-            if (exceptionMessages != null)
-                problemDetails.Errors.Add("exceptionMessages",
-                    exceptionMessages);
 
             return problemDetails;
         }
