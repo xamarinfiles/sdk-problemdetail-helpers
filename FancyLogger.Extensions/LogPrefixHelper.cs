@@ -1,6 +1,5 @@
 using System.Reflection;
 using static System.String;
-using static System.StringSplitOptions;
 
 // Source: https://github.com/xamarinfiles/library-fancy-logger-extensions
 //
@@ -31,16 +30,19 @@ namespace XamarinFiles.FancyLogger.Extensions
             if (IsNullOrWhiteSpace(assemblyName))
                 return "";
 
-            var splitSegments =
-                assemblyName.Split(rootAssemblyNamespace,
-                    RemoveEmptyEntries);
+            //var splitSegments =
+            //    assemblyName.Split(rootAssemblyNamespace,
+            //        RemoveEmptyEntries);
 
-            if (splitSegments.Length < 1)
+            var assemblyNamespaceLength =
+                assemblyName.Length - rootAssemblyNamespace.Length;
+            var assemblyNameSpaceTail =
+                assemblyName.Substring(assemblyNamespaceLength);
+
+            if (IsNullOrEmpty(assemblyNameSpaceTail))
                 return defaultLogPrefix;
 
-            var logPrefix = splitSegments[0];
-
-            return logPrefix;
+            return assemblyNameSpaceTail;
         }
 
         #endregion
