@@ -8,8 +8,10 @@ using XamarinFiles.FancyLogger.Options;
 using static System.Net.HttpStatusCode;
 using static XamarinFiles.FancyLogger.Enums.ErrorOrWarning;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
+using static XamarinFiles.PdHelpers.Refit.Enums.DetailsVariant;
+using static XamarinFiles.PdHelpers.Refit.Extractors;
 
-namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
+namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
 {
     internal static class Program
     {
@@ -31,10 +33,10 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
 
         #region Services
 
-        private static IFancyLogger? FancyLogger { get; }
+        private static IFancyLogger FancyLogger { get; }
 
 #if ASSEMBLY_LOGGING
-        private static AssemblyLogger? AssemblyLogger { get; }
+        private static AssemblyLogger AssemblyLogger { get; }
 #endif
 
         #endregion
@@ -60,7 +62,7 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
             }
             catch (Exception exception)
             {
-                if (FancyLogger is not null)
+                if (FancyLogger != null)
                 {
                     FancyLogger.LogException(exception);
                 }
@@ -89,17 +91,33 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
 
                 FancyLogger.LogSection("Run PdHelpers Refit Tests");
 
+                GenerateExceptionProblemReport();
+
+                GenerateLoginProblemDetails();
 
                 GenerateGeneralProblemDetails();
 
                 GenerateJsonProblemDetails();
-
-                GenerateLoginProblemDetails();
             }
             catch (Exception exception)
             {
                 FancyLogger?.LogException(exception);
             }
+        }
+
+        private static void GenerateExceptionProblemReport()
+        {
+            FancyLogger!.LogSection("Test Extracting Problem Report");
+
+            var exception =
+                new Exception("Outer Exception",
+                    new Exception("Inner Exception"));
+
+            var problemReport = ExtractProblemReport(exception,
+                new[] { "Developer Message 1", "Developer Message 2" },
+                new[] { "User Message 1", "User Message 2" });
+
+            FancyLogger.LogProblemReport(problemReport, Error);
         }
 
         private static void GenerateGeneralProblemDetails()
@@ -114,10 +132,13 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
 
         private static void GenerateLoginProblemDetails()
         {
+            FancyLogger!.LogSection("Test Bundling Problem Report");
+
             // 400 - BadRequest - Error
 
             var badRequestProblem =
-                BundleRefitProblemDetails(BadRequest,
+                BundleProblemReport(ValidationProblem,
+                    BadRequest,
                     title: LoginFailedTitle,
                     detail: "Invalid fields: Username, Password",
                     developerMessages: new[]
@@ -127,17 +148,18 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Shared
                     },
                     userMessages: LoginFailedUserMessages);
 
-            FancyLogger!.LogProblemDetails(badRequestProblem, Error);
+            FancyLogger.LogProblemReport(badRequestProblem, Error);
 
             // 401 - Unauthorized - Warning
 
             var unauthorizedProblem =
-                BundleRefitProblemDetails(Unauthorized,
+                BundleProblemReport(GenericProblem,
+                    Unauthorized,
                     title: LoginFailedTitle,
                     detail : "Username and/or Password do not match",
                     userMessages: LoginFailedUserMessages);
 
-            FancyLogger.LogProblemDetails(unauthorizedProblem, Warning);
+            FancyLogger.LogProblemReport(unauthorizedProblem, Warning);
 
             // TODO Add other ProblemDetails tests from other repo
         }

@@ -2,24 +2,22 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
+
+    <TargetFrameworks>netcoreapp3.1;net6.0;net7.0</TargetFrameworks>
     <AssemblyName>XamarinFiles.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>XamarinFiles.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <StartupObject></StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\FancyLogger.Extensions\AssemblyLogger.cs" Link="AssemblyLogger.cs" />
-    <Compile Include="..\FancyLogger.Extensions\LogPrefixHelper.cs" Link="LogPrefixHelper.cs" />
-    <Compile Include="..\PdHelpers.Tests.Smoke.Refit.Shared\Program.cs" Link="Program.cs" />
+    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.1.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.0.4" />
-  </ItemGroup>
+  <Import Project="..\PdHelpers.Tests.Smoke.Refit.Shared\PdHelpers.Tests.Smoke.Refit.Shared.projitems" Label="Shared" />
+
+  <Import Project="..\FancyLogger.Extensions\FancyLogger.Extensions.projitems" Label="Shared" />
 
   <ItemGroup>
     <ProjectReference Include="..\PdHelpers.Refit\PdHelpers.Refit.csproj" />
   </ItemGroup>
+
 </Project>

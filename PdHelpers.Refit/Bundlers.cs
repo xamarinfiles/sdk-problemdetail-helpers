@@ -1,48 +1,80 @@
 ﻿using System.Net;
+using XamarinFiles.PdHelpers.Refit.Enums;
+using XamarinFiles.PdHelpers.Refit.Models;
 using static XamarinFiles.PdHelpers.Shared.StatusCodeDetails;
-using RefitProblemDetails = Refit.ProblemDetails;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
     public static class Bundlers
     {
-        public static RefitProblemDetails
-            BundleRefitProblemDetails(
-            HttpStatusCode statusCode,
-            string title = null,
-            string detail = null,
-            string instance = null,
-            string[] exceptionMessages = null,
-            string[] developerMessages = null,
-            string[] userMessages = null
+        public static ProblemReport
+            BundleProblemReport(DetailsVariant detailsVariant,
+                HttpStatusCode statusCodeEnum,
+                string title = null,
+                string detail = null,
+                string instance = null,
+                string type = null,
+                string[] developerMessages = null,
+                string[] userMessages = null,
+                ExceptionMessages exceptionMessages = null
         )
         {
-            var statusCodeInt = (int)statusCode;
+            var statusCodeInt = (int)statusCodeEnum;
+
+            var problemReport = BundleProblemReport(detailsVariant,
+                statusCodeInt,
+                title,
+                detail,
+                instance,
+                type,
+                developerMessages,
+                userMessages,
+                exceptionMessages);
+
+            return problemReport;
+        }
+
+        public static ProblemReport
+            BundleProblemReport(DetailsVariant detailsVariant,
+                int statusCodeInt,
+                string title = null,
+                string detail = null,
+                string instance = null,
+                string type = null,
+                string[] developerMessages = null,
+                string[] userMessages = null,
+                ExceptionMessages exceptionMessages = null
+            )
+        {
             var statusCodeDetails =
                 GetHttpStatusDetails(statusCodeInt);
 
-            var problemDetails = new RefitProblemDetails
+            var problemReport = new ProblemReport
             {
-                Status = statusCodeDetails.Code,
+                DetailsVariantEnum = detailsVariant,
+                StatusCode = statusCodeDetails.Code,
                 Title = title ?? statusCodeDetails.Title,
-                Type = statusCodeDetails.Type,
                 Detail = detail,
-                Instance = instance
+                Instance = instance,
+                Type = type ?? statusCodeDetails.Type,
             };
 
-            if (exceptionMessages?.Length > 0)
-                problemDetails.Errors.Add("exceptionMessages",
-                    exceptionMessages);
+            if (developerMessages != null
+                || userMessages != null
+                || exceptionMessages != null)
+            {
+                problemReport.Messages = new Messages
+                {
+                    DeveloperMessages = developerMessages,
+                    UserMessages = userMessages,
+                    // TODO Add flag or always include?
+                    ExceptionMessages = exceptionMessages
+                };
+            }
 
-            if (developerMessages?.Length > 0)
-                problemDetails.Errors.Add("developerMessages",
-                    developerMessages);
+            // TODO Populate Extensions and OtherErrors from additional data
 
-            if (userMessages?.Length > 0)
-                problemDetails.Errors.Add("userMessages",
-                    userMessages);
-
-            return problemDetails;
+            return problemReport;
         }
     }
 }
