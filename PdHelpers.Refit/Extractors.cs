@@ -92,7 +92,7 @@ namespace XamarinFiles.PdHelpers.Refit
 
             if (!string.IsNullOrWhiteSpace(exception.InnerException?.Message))
             {
-                exceptionMessages.ExceptionMessage =
+                exceptionMessages.InnerExceptionMessage =
                     exception.InnerException.Message;
             }
 
