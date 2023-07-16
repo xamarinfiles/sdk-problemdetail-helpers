@@ -12,11 +12,10 @@ using static XamarinFiles.FancyLogger.Helpers.Characters;
 
 // Source: https://github.com/xamarinfiles/library-fancy-logger-extensions
 //
-// Problem: when AssemblyLogger is in a shared project and accessed by another
-// project, it triggers an anti-virus flag for assembly passing across projects
+// Problem: when AssemblyLogger is in a separate library and accessed by another
+// library, it triggers an anti-virus flag for assembly passing across libraries
 //
-// Solution: copy file to each repo and add to each test project as shared file
-// to avoid duplicating code into each test program
+// Solution: copy shared project to each repo and add to each test project
 namespace XamarinFiles.FancyLogger.Extensions
 {
     // Turn off C# features after 7.3 for compatibility with .NET Std 2.0 and Xam Forms

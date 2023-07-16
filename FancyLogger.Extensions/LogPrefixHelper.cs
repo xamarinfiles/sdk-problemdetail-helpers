@@ -3,10 +3,10 @@ using static System.String;
 
 // Source: https://github.com/xamarinfiles/library-fancy-logger-extensions
 //
-// Problem: unable to use shared project due to anti-virus issue with AssemblyLogger
+// Problem: when AssemblyLogger is in a separate library and accessed by another
+// library, it triggers an anti-virus flag for assembly passing across libraries
 //
-// Solution: copy file to each repo and add to each test project as shared file
-// to avoid duplicating code into each test program
+// Solution: copy shared project to each repo and add to each test project
 namespace XamarinFiles.FancyLogger.Extensions
 {
     internal static class LogPrefixHelper
