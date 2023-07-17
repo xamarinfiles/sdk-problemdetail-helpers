@@ -1,6 +1,8 @@
-﻿using Refit;
+using Refit;
 using System;
 using System.Net;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static System.Text.Json.JsonSerializer;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
@@ -12,6 +14,20 @@ namespace XamarinFiles.PdHelpers.Refit
 {
     public static class Extractors
     {
+        #region Fields
+
+        private static readonly JsonSerializerOptions
+            JsonSerializerReadOptions = new()
+            {
+                AllowTrailingCommas = true,
+                NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                PropertyNameCaseInsensitive = true
+            };
+
+        #endregion
+
+        #region Methods
+
         public static ProblemReport
             ExtractProblemReport(Exception exception,
                 string[] developerMessages = null,
@@ -39,7 +55,8 @@ namespace XamarinFiles.PdHelpers.Refit
                     try
                     {
                         var problemDetails =
-                            Deserialize<RefitProblemDetails>(apiException.Content);
+                            Deserialize<RefitProblemDetails>(
+                                apiException.Content, JsonSerializerReadOptions);
 
                         problemReport =
                             ConvertFromProblemDetails(
@@ -101,4 +118,6 @@ namespace XamarinFiles.PdHelpers.Refit
             return exceptionMessages;
         }
     }
+
+    #endregion
 }
