@@ -17,7 +17,7 @@
   <Import Project="..\FancyLogger.Extensions\FancyLogger.Extensions.projitems" Label="Shared" />
 
   <ItemGroup>
-    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="2.0.1" />
+    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="2.0.2" />
   </ItemGroup>
 
 </Project>
