@@ -9,8 +9,9 @@ namespace XamarinFiles.PdHelpers.Refit
     {
         public static ProblemReport
             ConvertFromProblemDetails(DetailsVariant detailsVariant,
-                RefitProblemDetails problemDetails, string[] developerMessages,
-                string[] userMessages, ExceptionMessages exceptionMessages)
+                RefitProblemDetails problemDetails, string httpMethod,
+                string[] developerMessages, string[] userMessages,
+                ExceptionMessages exceptionMessages)
         {
             var problemReport = BundleProblemReport(detailsVariant,
                 problemDetails.Status,
@@ -18,6 +19,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 problemDetails.Detail,
                 problemDetails.Instance,
                 problemDetails.Type,
+                httpMethod,
                 developerMessages,
                 userMessages,
                 exceptionMessages);

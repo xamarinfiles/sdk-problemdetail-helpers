@@ -1,4 +1,4 @@
-using Refit;
+﻿using Refit;
 using System;
 using System.Net;
 using System.Text.Json.Serialization;
@@ -37,6 +37,7 @@ namespace XamarinFiles.PdHelpers.Refit
             var exceptionMessages =
                 ExtractExceptionMessages(exception);
 
+            // TODO Pull from ApiException: full Uri?
             switch (exception)
             {
                 case ValidationApiException { Content: { } } validationApiException:
@@ -45,7 +46,8 @@ namespace XamarinFiles.PdHelpers.Refit
 
                     problemReport =
                         ConvertFromProblemDetails(ValidationProblem,
-                            problemDetails, developerMessages, userMessages,
+                            problemDetails, validationApiException.HttpMethod.Method,
+                            developerMessages, userMessages,
                             exceptionMessages);
 
                     break;
@@ -59,9 +61,10 @@ namespace XamarinFiles.PdHelpers.Refit
                                 apiException.Content, JsonSerializerReadOptions);
 
                         problemReport =
-                            ConvertFromProblemDetails(
-                                GenericProblem, problemDetails,
-                                developerMessages, userMessages, exceptionMessages);
+                            ConvertFromProblemDetails(GenericProblem,
+                                problemDetails, apiException.HttpMethod.Method,
+                                developerMessages, userMessages,
+                                exceptionMessages);
                     }
                     catch
                     {
