@@ -93,11 +93,11 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
 
                 GenerateExceptionProblemReport();
 
-                GenerateLoginProblemDetails();
+                GenerateLoginProblemReport();
 
-                GenerateGeneralProblemDetails();
+                GenerateGeneralProblemReport();
 
-                GenerateJsonProblemDetails();
+                GenerateJsonProblemReport();
             }
             catch (Exception exception)
             {
@@ -113,24 +113,28 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
                 new Exception("Outer Exception",
                     new Exception("Inner Exception"));
 
-            var problemReport = ExtractProblemReport(exception,
+            var exceptionProblemReport = ExtractProblemReport(exception,
                 new[] { "Developer Message 1", "Developer Message 2" },
                 new[] { "User Message 1", "User Message 2" });
 
-            FancyLogger.LogProblemReport(problemReport, Error);
+            FancyLogger.LogProblemReport(exceptionProblemReport, Error);
+
+            // TODO Create or deserialize other exceptions to test:
+            // - ApiException [request method, method, content(PD), statusCode, etc.]
+            // - ValidationApiException [ApiException]
         }
 
-        private static void GenerateGeneralProblemDetails()
+        private static void GenerateGeneralProblemReport()
         {
             // TODO
         }
 
-        private static void GenerateJsonProblemDetails()
+        private static void GenerateJsonProblemReport()
         {
             // TODO
         }
 
-        private static void GenerateLoginProblemDetails()
+        private static void GenerateLoginProblemReport()
         {
             FancyLogger!.LogSection("Test Bundling Problem Report");
 
@@ -141,6 +145,7 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
                     BadRequest,
                     title: LoginFailedTitle,
                     detail: "Invalid fields: Username, Password",
+                    httpMethod: "POST",
                     developerMessages: new[]
                     {
                         "The Username field is required.",
@@ -157,6 +162,7 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
                     Unauthorized,
                     title: LoginFailedTitle,
                     detail : "Username and/or Password do not match",
+                    httpMethod: "POST",
                     userMessages: LoginFailedUserMessages);
 
             FancyLogger.LogProblemReport(unauthorizedProblem, Warning);

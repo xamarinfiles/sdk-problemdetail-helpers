@@ -43,6 +43,12 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
         #endregion
 
+        #region Other Context Information
+
+        public string Method { get; set; }
+
+        #endregion
+
         #region Expected Messages Promoted from Extensions/Errors
 
         [JsonPropertyName("messages")]

@@ -14,6 +14,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 string detail = null,
                 string instance = null,
                 string type = null,
+                string httpMethod = null,
                 string[] developerMessages = null,
                 string[] userMessages = null,
                 ExceptionMessages exceptionMessages = null
@@ -27,6 +28,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 detail,
                 instance,
                 type,
+                httpMethod,
                 developerMessages,
                 userMessages,
                 exceptionMessages);
@@ -41,6 +43,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 string detail = null,
                 string instance = null,
                 string type = null,
+                string httpMethod = null,
                 string[] developerMessages = null,
                 string[] userMessages = null,
                 ExceptionMessages exceptionMessages = null
@@ -57,6 +60,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 Detail = detail,
                 Instance = instance,
                 Type = type ?? statusCodeDetails.Type,
+                Method = httpMethod ?? "Unknown"
             };
 
             if (developerMessages != null
