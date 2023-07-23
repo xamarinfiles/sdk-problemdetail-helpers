@@ -7,7 +7,6 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 {
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    [SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
     public class ProblemReport
     {
         #region Source Format (ProblemDetails or ValidationProblemDetails)
@@ -29,13 +28,13 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         public int StatusCode { get; set; }
 
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         [JsonPropertyName("detail")]
-        public string Detail { get; set; }
+        public string? Detail { get; set; }
 
         [JsonPropertyName("instance")]
-        public string Instance { get; set; }
+        public string? Instance { get; set; }
 
         // TODO Keep default value from Refit?
         [JsonPropertyName("type")]
@@ -45,14 +44,14 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
         #region Other Context Information
 
-        public string Method { get; set; }
+        public string? Method { get; set; }
 
         #endregion
 
         #region Expected Messages Promoted from Extensions/Errors
 
         [JsonPropertyName("messages")]
-        public Messages Messages { get; set; }
+        public Messages? Messages { get; set; }
 
         #endregion
 
