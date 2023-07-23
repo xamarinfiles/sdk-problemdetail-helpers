@@ -18,8 +18,6 @@ using static XamarinFiles.FancyLogger.Helpers.Characters;
 // Solution: copy shared project to each repo and add to each test project
 namespace XamarinFiles.FancyLogger.Extensions
 {
-    // Turn off C# features after 7.3 for compatibility with .NET Std 2.0 and Xam Forms
-    [SuppressMessage("ReSharper", "ReplaceSubstringWithRangeIndexer")]
     public class AssemblyLogger
     {
         #region Fields
@@ -174,23 +172,23 @@ namespace XamarinFiles.FancyLogger.Extensions
 
         private void LogExecutingAssembly(Assembly executingAssembly)
         {
-            LogAssembly(ExecutingAssemblyLabel, executingAssembly, true);
+            LogAssembly(executingAssembly, ExecutingAssemblyLabel, true);
         }
 
         private void LogDomainAssembly(Assembly domainAssembly)
         {
-            LogAssembly(DomainAssemblyLabel, domainAssembly);
+            LogAssembly(domainAssembly, DomainAssemblyLabel);
         }
 
         private void LogReferenceAssembly(AssemblyName referencedAssemblyName)
         {
-            LogAssemblyName(ReferenceAssemblyLabel, referencedAssemblyName);
+            LogAssemblyName(referencedAssemblyName, ReferenceAssemblyLabel);
         }
 
-        private void LogAssembly(string assemblyNameLabel, Assembly assembly,
+        private void LogAssembly(Assembly assembly, string assemblyNameLabel,
             bool isExecutingAssembly = false)
         {
-            if (assembly == null)
+            if (assembly is null)
                 return;
 
             // TODO Account for all cases where AssemblyName is null
@@ -213,10 +211,10 @@ namespace XamarinFiles.FancyLogger.Extensions
             LogCultureInfo(assemblyName.CultureInfo, newLineAfter: true);
         }
 
-        private void LogAssemblyName(string assemblyNameLabel,
-            AssemblyName assemblyName)
+        private void LogAssemblyName(AssemblyName assemblyName,
+            string assemblyNameLabel)
         {
-            if (assemblyName == null)
+            if (assemblyName is null)
                 return;
 
             LogName(assemblyNameLabel, assemblyName);
