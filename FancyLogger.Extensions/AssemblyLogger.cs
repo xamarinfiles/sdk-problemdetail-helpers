@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -18,8 +18,6 @@ using static XamarinFiles.FancyLogger.Helpers.Characters;
 // Solution: copy shared project to each repo and add to each test project
 namespace XamarinFiles.FancyLogger.Extensions
 {
-    // Turn off C# features after 7.3 for compatibility with .NET Std 2.0 and Xam Forms
-    [SuppressMessage("ReSharper", "ReplaceSubstringWithRangeIndexer")]
     public class AssemblyLogger
     {
         #region Fields
@@ -160,7 +158,7 @@ namespace XamarinFiles.FancyLogger.Extensions
                 return;
 
             var location = assembly.Location;
-            var path = location.Substring(_ancestorPathLength);
+            var path = location[_ancestorPathLength..];
             var relativePath = Path.GetDirectoryName(path);
 
             FancyLogger.LogScalar("Relative Path",
@@ -174,23 +172,23 @@ namespace XamarinFiles.FancyLogger.Extensions
 
         private void LogExecutingAssembly(Assembly executingAssembly)
         {
-            LogAssembly(ExecutingAssemblyLabel, executingAssembly, true);
+            LogAssembly(executingAssembly, ExecutingAssemblyLabel, true);
         }
 
         private void LogDomainAssembly(Assembly domainAssembly)
         {
-            LogAssembly(DomainAssemblyLabel, domainAssembly);
+            LogAssembly(domainAssembly, DomainAssemblyLabel);
         }
 
         private void LogReferenceAssembly(AssemblyName referencedAssemblyName)
         {
-            LogAssemblyName(ReferenceAssemblyLabel, referencedAssemblyName);
+            LogAssemblyName(referencedAssemblyName, ReferenceAssemblyLabel);
         }
 
-        private void LogAssembly(string assemblyNameLabel, Assembly assembly,
+        private void LogAssembly(Assembly? assembly, string assemblyNameLabel,
             bool isExecutingAssembly = false)
         {
-            if (assembly == null)
+            if (assembly is null)
                 return;
 
             // TODO Account for all cases where AssemblyName is null
@@ -213,10 +211,10 @@ namespace XamarinFiles.FancyLogger.Extensions
             LogCultureInfo(assemblyName.CultureInfo, newLineAfter: true);
         }
 
-        private void LogAssemblyName(string assemblyNameLabel,
-            AssemblyName assemblyName)
+        private void LogAssemblyName(AssemblyName? assemblyName,
+            string assemblyNameLabel)
         {
-            if (assemblyName == null)
+            if (assemblyName is null)
                 return;
 
             LogName(assemblyNameLabel, assemblyName);
@@ -235,9 +233,7 @@ namespace XamarinFiles.FancyLogger.Extensions
 
         #endregion
 
-        #region Common Assembly/AssemblyName Properties
-
-        #endregion
+        #region Access to Common Assembly/AssemblyName Properties
 
         private void LogName(string assemblyLabel, AssemblyName assemblyName,
             bool newLineAfter = true)
@@ -301,7 +297,7 @@ namespace XamarinFiles.FancyLogger.Extensions
                 newLineAfter: newLineAfter);
         }
 
-        private void LogCultureInfo(CultureInfo cultureInfo,
+        private void LogCultureInfo(CultureInfo? cultureInfo,
             bool newLineAfter = false)
         {
             if (!ShowCultureInfo || cultureInfo is null)
@@ -331,7 +327,7 @@ namespace XamarinFiles.FancyLogger.Extensions
                     newLineAfter: newLineAfter);
         }
 
-        private static string GetPublicKeyToken(byte[] byteArray)
+        private static string GetPublicKeyToken(byte[]? byteArray)
         {
             var byteString = string.Empty;
 
@@ -344,6 +340,7 @@ namespace XamarinFiles.FancyLogger.Extensions
             return byteString;
         }
 
+        #endregion
 
         #endregion
     }

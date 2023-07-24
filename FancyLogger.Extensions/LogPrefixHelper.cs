@@ -30,19 +30,14 @@ namespace XamarinFiles.FancyLogger.Extensions
             if (IsNullOrWhiteSpace(assemblyName))
                 return "";
 
-            //var splitSegments =
-            //    assemblyName.Split(rootAssemblyNamespace,
-            //        RemoveEmptyEntries);
-
             var assemblyNamespaceLength =
                 assemblyName.Length - rootAssemblyNamespace.Length;
             var assemblyNameSpaceTail =
-                assemblyName.Substring(assemblyNamespaceLength);
+                assemblyName[assemblyNamespaceLength..];
 
-            if (IsNullOrEmpty(assemblyNameSpaceTail))
-                return defaultLogPrefix;
-
-            return assemblyNameSpaceTail;
+            return IsNullOrEmpty(assemblyNameSpaceTail)
+                ? defaultLogPrefix
+                : assemblyNameSpaceTail;
         }
 
         #endregion
