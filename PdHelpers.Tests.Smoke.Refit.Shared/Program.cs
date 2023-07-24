@@ -33,10 +33,10 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
 
         #region Services
 
-        private static IFancyLogger FancyLogger { get; }
+        private static IFancyLogger? FancyLogger { get; }
 
 #if ASSEMBLY_LOGGING
-        private static AssemblyLogger AssemblyLogger { get; }
+        private static AssemblyLogger? AssemblyLogger { get; }
 #endif
 
         #endregion

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
@@ -158,7 +158,7 @@ namespace XamarinFiles.FancyLogger.Extensions
                 return;
 
             var location = assembly.Location;
-            var path = location.Substring(_ancestorPathLength);
+            var path = location[_ancestorPathLength..];
             var relativePath = Path.GetDirectoryName(path);
 
             FancyLogger.LogScalar("Relative Path",
@@ -185,7 +185,7 @@ namespace XamarinFiles.FancyLogger.Extensions
             LogAssemblyName(referencedAssemblyName, ReferenceAssemblyLabel);
         }
 
-        private void LogAssembly(Assembly assembly, string assemblyNameLabel,
+        private void LogAssembly(Assembly? assembly, string assemblyNameLabel,
             bool isExecutingAssembly = false)
         {
             if (assembly is null)
@@ -211,7 +211,7 @@ namespace XamarinFiles.FancyLogger.Extensions
             LogCultureInfo(assemblyName.CultureInfo, newLineAfter: true);
         }
 
-        private void LogAssemblyName(AssemblyName assemblyName,
+        private void LogAssemblyName(AssemblyName? assemblyName,
             string assemblyNameLabel)
         {
             if (assemblyName is null)
@@ -233,9 +233,7 @@ namespace XamarinFiles.FancyLogger.Extensions
 
         #endregion
 
-        #region Common Assembly/AssemblyName Properties
-
-        #endregion
+        #region Access to Common Assembly/AssemblyName Properties
 
         private void LogName(string assemblyLabel, AssemblyName assemblyName,
             bool newLineAfter = true)
@@ -299,7 +297,7 @@ namespace XamarinFiles.FancyLogger.Extensions
                 newLineAfter: newLineAfter);
         }
 
-        private void LogCultureInfo(CultureInfo cultureInfo,
+        private void LogCultureInfo(CultureInfo? cultureInfo,
             bool newLineAfter = false)
         {
             if (!ShowCultureInfo || cultureInfo is null)
@@ -329,7 +327,7 @@ namespace XamarinFiles.FancyLogger.Extensions
                     newLineAfter: newLineAfter);
         }
 
-        private static string GetPublicKeyToken(byte[] byteArray)
+        private static string GetPublicKeyToken(byte[]? byteArray)
         {
             var byteString = string.Empty;
 
@@ -342,6 +340,7 @@ namespace XamarinFiles.FancyLogger.Extensions
             return byteString;
         }
 
+        #endregion
 
         #endregion
     }
