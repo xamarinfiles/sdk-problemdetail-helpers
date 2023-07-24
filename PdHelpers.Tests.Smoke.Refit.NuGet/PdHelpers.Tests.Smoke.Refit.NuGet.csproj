@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -10,15 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.1.1" />
+    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.1.4" />
+    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="2.1.0" />
   </ItemGroup>
-
-  <Import Project="..\PdHelpers.Tests.Smoke.Refit.Shared\PdHelpers.Tests.Smoke.Refit.Shared.projitems" Label="Shared" />
 
   <Import Project="..\FancyLogger.Extensions\FancyLogger.Extensions.projitems" Label="Shared" />
 
-  <ItemGroup>
-    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="2.0.2" />
-  </ItemGroup>
+  <Import Project="..\PdHelpers.Tests.Smoke.Refit.Shared\PdHelpers.Tests.Smoke.Refit.Shared.projitems" Label="Shared" />
 
 </Project>
