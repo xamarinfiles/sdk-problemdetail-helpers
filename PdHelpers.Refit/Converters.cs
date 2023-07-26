@@ -32,7 +32,9 @@ namespace XamarinFiles.PdHelpers.Refit
             ConvertFromProblemDetails(ProblemDetails? problemDetails,
                 DetailsVariant detailsVariant,
                 ErrorOrWarning errorOrWarning,
-                AppStateDetails? appStateDetails = null,
+                string? sourceName = null,
+                string? sourceLocation = null,
+                string? sourceOperation = null,
                 HttpRequestMessage? requestMessage = null,
                 string? resourceName = null,
                 string[]? developerMessages = null,
@@ -41,11 +43,19 @@ namespace XamarinFiles.PdHelpers.Refit
         {
             ProblemReport problemReport;
 
+            var sourceDetails =
+                SourceDetails.Create(sourceName, sourceLocation, sourceOperation);
+
             if (problemDetails is null)
             {
                 problemReport =
-                    CreateGenericProblemReport(appStateDetails,
-                        developerMessages, userMessages, exceptionMessages);
+                    CreateGenericProblemReport(
+                        sourceName,
+                        sourceLocation,
+                        sourceOperation,
+                        developerMessages,
+                        userMessages,
+                        exceptionMessages);
             }
             else
             {
@@ -54,7 +64,7 @@ namespace XamarinFiles.PdHelpers.Refit
                         problemDetails.Status,
                         detailsVariant,
                         errorOrWarning,
-                        appStateDetails,
+                        sourceDetails,
                         requestMessage,
                         resourceName,
                         problemDetails.Title,
@@ -72,7 +82,9 @@ namespace XamarinFiles.PdHelpers.Refit
             ConvertFromProblemDetails(string? problemDetailsStr,
                 DetailsVariant detailsVariant,
                 ErrorOrWarning errorOrWarning,
-                AppStateDetails? appStateDetails = null,
+                string? sourceName = null,
+                string? sourceLocation = null,
+                string? sourceOperation = null,
                 HttpRequestMessage? requestMessage = null,
                 string? resourceName = null,
                 string[]? developerMessages = null,
@@ -81,13 +93,21 @@ namespace XamarinFiles.PdHelpers.Refit
         {
             ProblemReport problemReport;
 
+            var sourceDetails =
+                SourceDetails.Create(sourceName, sourceLocation, sourceOperation);
+
             // Redundant Is-Null check to silence .NET Std 2.0 compiler warning
             if (problemDetailsStr is null
                 || IsNullOrWhiteSpace(problemDetailsStr))
             {
                 problemReport =
-                    CreateGenericProblemReport(appStateDetails,
-                        developerMessages, userMessages, exceptionMessages);
+                    CreateGenericProblemReport(
+                        sourceName,
+                        sourceLocation,
+                        sourceOperation,
+                        developerMessages,
+                        userMessages,
+                        exceptionMessages);
             }
             else
             {
@@ -102,7 +122,7 @@ namespace XamarinFiles.PdHelpers.Refit
                             problemDetails!.Status,
                             detailsVariant,
                             errorOrWarning,
-                            appStateDetails,
+                            sourceDetails,
                             requestMessage,
                             resourceName,
                             problemDetails.Title,
@@ -117,9 +137,10 @@ namespace XamarinFiles.PdHelpers.Refit
                     // TODO Add context about unidentified input text <> PD/VPD
                     problemReport =
                         Extractors.ExtractProblemReport(exception,
-                            Error, appStateDetails,
-                            "ProblemDetails Converter",
-                            developerMessages, userMessages);
+                            Error,
+                            sourceOperation: "Extract Exception",
+                            developerMessages: developerMessages,
+                            userMessages: userMessages);
                 }
             }
 

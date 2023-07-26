@@ -22,8 +22,8 @@ namespace XamarinFiles.PdHelpers.Refit.Models
             ResourceName = resourceName;
         }
 
-        public static RequestDetails? Create(
-            HttpRequestMessage? requestMessage = null,
+        public static RequestDetails?
+            Create(HttpRequestMessage? requestMessage = null,
             string? resourceName = null)
         {
             if (requestMessage is null

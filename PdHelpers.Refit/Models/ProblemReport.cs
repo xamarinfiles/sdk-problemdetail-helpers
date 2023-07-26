@@ -16,14 +16,14 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
         private ProblemReport(DetailsVariant detailsVariant,
             ErrorOrWarning errorOrWarning,
-            AppStateDetails? appStateDetails,
+            SourceDetails? sourceDetails,
             RequestDetails? requestDetails,
             ResponseDetails responseDetails,
             Messages? importantMessages)
         {
             DetailsVariantEnum = detailsVariant;
             ErrorOrWarningEnum = errorOrWarning;
-            AppStateDetails = appStateDetails;
+            SourceDetails = sourceDetails;
             RequestDetails = requestDetails;
             ResponseDetails = responseDetails;
             ImportantMessages = importantMessages;
@@ -34,7 +34,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
             Create(int statusCodeInt,
                 DetailsVariant detailsVariant,
                 ErrorOrWarning errorOrWarning,
-                AppStateDetails? appStateDetails = null,
+                SourceDetails? sourceDetails = null,
                 HttpRequestMessage? requestMessage = null,
                 string? resourceName = null,
                 string? title = null,
@@ -57,7 +57,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
             var problemReport =
                 new ProblemReport(detailsVariant, errorOrWarning,
-                    appStateDetails, requestDetails, responseDetails,
+                    sourceDetails, requestDetails, responseDetails,
                     importantMessages);
 
             return problemReport;
@@ -68,7 +68,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
             Create(HttpStatusCode statusCode,
                 DetailsVariant detailsVariant,
                 ErrorOrWarning errorOrWarning,
-                AppStateDetails? appStateDetails = null,
+                SourceDetails? sourceDetails = null,
                 HttpRequestMessage? requestMessage = null,
                 string? resourceName = null,
                 string? title = null,
@@ -82,7 +82,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
             var problemReport =
                 Create(statusCodeInt, detailsVariant, errorOrWarning,
-                    appStateDetails, requestMessage, resourceName, title, detail,
+                    sourceDetails, requestMessage, resourceName, title, detail,
                     instance, developerMessages, userMessages, exceptionMessages);
 
             return problemReport;
@@ -116,8 +116,8 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
         #region App State Details
 
-        [JsonPropertyName("appStateDetails")]
-        public AppStateDetails? AppStateDetails { get; }
+        [JsonPropertyName("sourceDetails")]
+        public SourceDetails? SourceDetails { get; }
 
         #endregion
 

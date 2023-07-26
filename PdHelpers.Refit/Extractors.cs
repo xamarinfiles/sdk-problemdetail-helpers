@@ -15,12 +15,15 @@ namespace XamarinFiles.PdHelpers.Refit
         public static ProblemReport
             ExtractProblemReport(Exception exception,
                 ErrorOrWarning errorOrWarning,
-                AppStateDetails? appStateDetails = null,
+                string? sourceOperation = null,
                 string? resourceName = null,
                 string[]? developerMessages = null,
                 string[]? userMessages = null)
         {
             ProblemReport problemReport;
+
+            // TODO Pull exception info directly or pass exception to converter
+            var sourceDetails = SourceDetails.Create(exception, sourceOperation);
             var exceptionMessages = ExceptionMessages.Create(exception);
 
             // TODO Pull from ApiException: full Uri?
@@ -34,7 +37,9 @@ namespace XamarinFiles.PdHelpers.Refit
                         ConvertFromProblemDetails(problemDetails,
                             ValidationProblem,
                             errorOrWarning,
-                            appStateDetails,
+                            sourceName: sourceDetails?.Name,
+                            sourceLocation: sourceDetails?.Location,
+                            sourceOperation,
                             validationApiException.RequestMessage,
                             resourceName,
                             developerMessages,
@@ -53,7 +58,9 @@ namespace XamarinFiles.PdHelpers.Refit
                         ConvertFromProblemDetails(problemDetailsStr,
                             GenericProblem,
                             errorOrWarning,
-                            appStateDetails,
+                            sourceName: sourceDetails?.Name,
+                            sourceLocation: sourceDetails?.Location,
+                            sourceOperation,
                             apiException.RequestMessage,
                             resourceName,
                             developerMessages,
@@ -63,8 +70,13 @@ namespace XamarinFiles.PdHelpers.Refit
                     break;
                 default:
                     problemReport =
-                        CreateGenericProblemReport(appStateDetails,
-                            developerMessages, userMessages, exceptionMessages);
+                        CreateGenericProblemReport(
+                            sourceName: sourceDetails?.Name,
+                            sourceLocation: sourceDetails?.Location,
+                            sourceOperation,
+                            developerMessages,
+                            userMessages,
+                            exceptionMessages);
 
                     break;
             }

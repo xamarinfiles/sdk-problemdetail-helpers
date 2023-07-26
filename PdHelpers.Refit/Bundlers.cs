@@ -8,15 +8,21 @@ namespace XamarinFiles.PdHelpers.Refit
     public static class Bundlers
     {
         internal static ProblemReport
-            CreateGenericProblemReport(AppStateDetails? appStateDetails,
+            CreateGenericProblemReport(
+                string? sourceName,
+                string? sourceLocation,
+                string? sourceOperation,
                 string[]? developerMessages,
                 string[]? userMessages,
                 ExceptionMessages? exceptionMessages)
         {
+            var sourceDetails =
+                SourceDetails.Create(sourceName, sourceLocation, sourceOperation);
+
             var problemReport =
                 ProblemReport.Create(InternalServerError,
                     GenericProblem, ErrorOrWarning.Error,
-                    appStateDetails: appStateDetails,
+                    sourceDetails: sourceDetails,
                     developerMessages: developerMessages,
                     userMessages: userMessages,
                     exceptionMessages: exceptionMessages);
