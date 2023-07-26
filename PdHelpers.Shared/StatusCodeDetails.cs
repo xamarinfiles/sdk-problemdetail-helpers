@@ -13,9 +13,9 @@ namespace XamarinFiles.PdHelpers.Shared
     // Non-standard codes skipped: 102, 103, 207, 208, 226, 306, 308, 421, 423,
     // 424, 428, 429, 431, 451, 506, 507, 508, 510, 511
 
-    public static class StatusCodeDetails
+    internal static class StatusCodeDetails
     {
-        public static (int Code, string Title, string Type)
+        internal static (int Code, string Title, string Type)
             GetHttpStatusDetails(int statusCodeInt)
         {
             return HttpStatusDetails.TryGetValue(statusCodeInt,
