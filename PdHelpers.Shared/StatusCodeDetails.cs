@@ -3,6 +3,7 @@ using static System.Net.HttpStatusCode;
 
 namespace XamarinFiles.PdHelpers.Shared
 {
+    // TODO Switch key to HttpStatusCode once off .NET Std 2.0 for XF?
     // Adapted from Microsoft.AspNetCore.Http.Extensions.ProblemDetailsDefaults.Defaults
     // by adding some missing enum entries from System.Net.HttpStatusCode and merging
     // with links to standard codes in IETF RFCs 7231, 7232, 7233, and 7235
@@ -12,9 +13,9 @@ namespace XamarinFiles.PdHelpers.Shared
     // Non-standard codes skipped: 102, 103, 207, 208, 226, 306, 308, 421, 423,
     // 424, 428, 429, 431, 451, 506, 507, 508, 510, 511
 
-    public static class StatusCodeDetails
+    internal static class StatusCodeDetails
     {
-        public static (int Code, string Title, string Type)
+        internal static (int Code, string Title, string Type)
             GetHttpStatusDetails(int statusCodeInt)
         {
             return HttpStatusDetails.TryGetValue(statusCodeInt,

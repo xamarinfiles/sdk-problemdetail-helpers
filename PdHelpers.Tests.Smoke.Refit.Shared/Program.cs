@@ -2,17 +2,22 @@
 
 using System;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using XamarinFiles.FancyLogger;
 using XamarinFiles.FancyLogger.Extensions;
 using XamarinFiles.FancyLogger.Options;
+using XamarinFiles.PdHelpers.Refit.Enums;
+using XamarinFiles.PdHelpers.Refit.Models;
 using static System.Net.HttpStatusCode;
-using static XamarinFiles.FancyLogger.Enums.ErrorOrWarning;
-using static XamarinFiles.PdHelpers.Refit.Bundlers;
 using static XamarinFiles.PdHelpers.Refit.Enums.DetailsVariant;
+using static XamarinFiles.PdHelpers.Refit.Enums.ErrorOrWarning;
 using static XamarinFiles.PdHelpers.Refit.Extractors;
 
 namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
 {
+    // TODO Simplify ErrorOrWarning reference after drop from FancyLogger
     internal static class Program
     {
         #region Fields
@@ -28,6 +33,14 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
         };
 
         private const string RootAssemblyNamespace = "XamarinFiles.PdHelpers.";
+
+        // TODO TEMP
+        private static readonly JsonSerializerOptions
+            DefaultWriteJsonOptions = new()
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                WriteIndented = true
+            };
 
         #endregion
 
@@ -95,9 +108,9 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
 
                 GenerateLoginProblemReport();
 
-                GenerateGeneralProblemReport();
+                //GenerateGeneralProblemReport();
 
-                GenerateJsonProblemReport();
+                //GenerateJsonProblemReport();
             }
             catch (Exception exception)
             {
@@ -112,40 +125,53 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
             var exception =
                 new Exception("Outer Exception",
                     new Exception("Inner Exception"));
+            var developerMessages =
+                new[] { "Developer Message 1", "Developer Message 2" };
+            var userMessages = new[] { "User Message 1", "User Message 2" };
 
-            var exceptionProblemReport = ExtractProblemReport(exception,
-                new[] { "Developer Message 1", "Developer Message 2" },
-                new[] { "User Message 1", "User Message 2" });
+            var errorExceptionProblemReport =
+                ExtractProblemReport(exception,
+                    Error,
+                    developerMessages: developerMessages,
+                    userMessages: userMessages);
 
-            FancyLogger.LogProblemReport(exceptionProblemReport, Error);
+            FancyLogger.LogProblemReport(errorExceptionProblemReport, Error);
+
+            var warningExceptionProblemReport =
+                ExtractProblemReport(exception,
+                    Warning,
+                    userMessages: userMessages);
+
+            FancyLogger.LogProblemReport(warningExceptionProblemReport, Warning);
 
             // TODO Create or deserialize other exceptions to test:
             // - ApiException [request method, method, content(PD), statusCode, etc.]
             // - ValidationApiException [ApiException]
         }
 
-        private static void GenerateGeneralProblemReport()
-        {
-            // TODO
-        }
-
-        private static void GenerateJsonProblemReport()
-        {
-            // TODO
-        }
-
         private static void GenerateLoginProblemReport()
         {
             FancyLogger!.LogSection("Test Bundling Problem Report");
 
+            var fakeAppStateDetails =
+                AppStateDetails.Create("Login Page", "Authentication");
+            const string fakeUriStr = "/api/login";
+            var fakeHttpRequestMessage =
+                new HttpRequestMessage(HttpMethod.Post, fakeUriStr);
+            const string fakeResourceName = "Login";
+
             // 400 - BadRequest - Error
 
             var badRequestProblem =
-                BundleProblemReport(ValidationProblem,
-                    BadRequest,
+                ProblemReport.Create(BadRequest,
+                    ValidationProblem,
+                    Error,
+                    fakeAppStateDetails,
+                    fakeHttpRequestMessage,
+                    fakeResourceName,
                     title: LoginFailedTitle,
                     detail: "Invalid fields: Username, Password",
-                    httpMethod: "POST",
+                    instance: fakeUriStr,
                     developerMessages: new[]
                     {
                         "The Username field is required.",
@@ -153,21 +179,37 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Shared
                     },
                     userMessages: LoginFailedUserMessages);
 
-            FancyLogger.LogProblemReport(badRequestProblem, Error);
+            FancyLogger.LogProblemReport(badRequestProblem, Warning);
 
             // 401 - Unauthorized - Warning
 
             var unauthorizedProblem =
-                BundleProblemReport(GenericProblem,
-                    Unauthorized,
+                ProblemReport.Create(Unauthorized,
+                    GenericProblem,
+                    Warning,
+                    fakeAppStateDetails,
+                    fakeHttpRequestMessage,
+                    fakeResourceName,
                     title: LoginFailedTitle,
                     detail : "Username and/or Password do not match",
-                    httpMethod: "POST",
+                    instance: fakeUriStr,
                     userMessages: LoginFailedUserMessages);
 
             FancyLogger.LogProblemReport(unauthorizedProblem, Warning);
 
             // TODO Add other ProblemDetails tests from other repo
         }
+
+        // TODO
+        //private static void GenerateGeneralProblemReport()
+        //{
+        //    // TODO
+        //}
+
+        // TODO
+        //private static void GenerateJsonProblemReport()
+        //{
+        //    // TODO
+        //}
     }
 }

@@ -1,11 +1,14 @@
-﻿using System.Text.Json;
+﻿using System;
+using Refit;
+using System.Net.Http;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using XamarinFiles.PdHelpers.Refit.Enums;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static System.String;
 using static System.Text.Json.JsonSerializer;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
-using RefitProblemDetails = Refit.ProblemDetails;
+using static XamarinFiles.PdHelpers.Refit.Enums.ErrorOrWarning;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
@@ -26,72 +29,97 @@ namespace XamarinFiles.PdHelpers.Refit
         #region Methods
 
         public static ProblemReport
-            ConvertFromProblemDetails(DetailsVariant detailsVariant,
-                RefitProblemDetails? problemDetails, string httpMethod,
-                string[]? developerMessages, string[]? userMessages,
-                ExceptionMessages? exceptionMessages)
+            ConvertFromProblemDetails(ProblemDetails? problemDetails,
+                DetailsVariant detailsVariant,
+                ErrorOrWarning errorOrWarning,
+                AppStateDetails? appStateDetails = null,
+                HttpRequestMessage? requestMessage = null,
+                string? resourceName = null,
+                string[]? developerMessages = null,
+                string[]? userMessages = null,
+                ExceptionMessages? exceptionMessages = null)
         {
             ProblemReport problemReport;
 
             if (problemDetails is null)
             {
-                problemReport = CreateGenericProblemReport(developerMessages,
-                    userMessages, exceptionMessages);
+                problemReport =
+                    CreateGenericProblemReport(appStateDetails,
+                        developerMessages, userMessages, exceptionMessages);
             }
             else
             {
-                problemReport = BundleProblemReport(detailsVariant,
-                    problemDetails.Status,
-                    problemDetails.Title,
-                    problemDetails.Detail,
-                    problemDetails.Instance,
-                    problemDetails.Type,
-                    httpMethod,
-                    developerMessages,
-                    userMessages,
-                    exceptionMessages);
+                problemReport =
+                    ProblemReport.Create(
+                        problemDetails.Status,
+                        detailsVariant,
+                        errorOrWarning,
+                        appStateDetails,
+                        requestMessage,
+                        resourceName,
+                        problemDetails.Title,
+                        problemDetails.Detail,
+                        problemDetails.Instance,
+                        developerMessages,
+                        userMessages,
+                        exceptionMessages);
             }
 
             return problemReport;
         }
 
         public static ProblemReport
-            ConvertFromProblemDetails(DetailsVariant detailsVariant,
-                string? problemDetailsStr, string httpMethod,
-                string[]? developerMessages, string[]? userMessages,
-                ExceptionMessages? exceptionMessages)
+            ConvertFromProblemDetails(string? problemDetailsStr,
+                DetailsVariant detailsVariant,
+                ErrorOrWarning errorOrWarning,
+                AppStateDetails? appStateDetails = null,
+                HttpRequestMessage? requestMessage = null,
+                string? resourceName = null,
+                string[]? developerMessages = null,
+                string[]? userMessages = null,
+                ExceptionMessages? exceptionMessages = null)
         {
             ProblemReport problemReport;
 
             // Redundant Is-Null check to silence .NET Std 2.0 compiler warning
-            if (problemDetailsStr is null || IsNullOrWhiteSpace(problemDetailsStr))
+            if (problemDetailsStr is null
+                || IsNullOrWhiteSpace(problemDetailsStr))
             {
-                problemReport = CreateGenericProblemReport(developerMessages,
-                    userMessages, exceptionMessages);
+                problemReport =
+                    CreateGenericProblemReport(appStateDetails,
+                        developerMessages, userMessages, exceptionMessages);
             }
             else
             {
                 try
                 {
                     var problemDetails =
-                        Deserialize<RefitProblemDetails>(problemDetailsStr,
+                        Deserialize<ProblemDetails>(problemDetailsStr,
                             JsonSerializerReadOptions);
 
-                    problemReport = BundleProblemReport(detailsVariant,
-                        problemDetails!.Status,
-                        problemDetails.Title,
-                        problemDetails.Detail,
-                        problemDetails.Instance,
-                        problemDetails.Type,
-                        httpMethod,
-                        developerMessages,
-                        userMessages,
-                        exceptionMessages);
+                    problemReport =
+                        ProblemReport.Create(
+                            problemDetails!.Status,
+                            detailsVariant,
+                            errorOrWarning,
+                            appStateDetails,
+                            requestMessage,
+                            resourceName,
+                            problemDetails.Title,
+                            problemDetails.Detail,
+                            problemDetails.Instance,
+                            developerMessages,
+                            userMessages,
+                            exceptionMessages);
                 }
-                catch
+                catch (Exception exception)
                 {
-                    problemReport = CreateGenericProblemReport(developerMessages,
-                        userMessages, exceptionMessages);
+                    // TODO Add context about unidentified input text <> PD/VPD
+                    problemReport =
+                        Extractors.ExtractProblemReport(exception,
+                            Error, appStateDetails,
+                            "ProblemDetails Converter",
+                            developerMessages, userMessages);
                 }
             }
 
