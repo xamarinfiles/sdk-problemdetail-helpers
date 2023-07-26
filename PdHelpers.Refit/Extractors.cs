@@ -1,5 +1,6 @@
 ﻿using Refit;
 using System;
+using XamarinFiles.PdHelpers.Refit.Enums;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
 using static XamarinFiles.PdHelpers.Refit.Converters;
@@ -13,12 +14,14 @@ namespace XamarinFiles.PdHelpers.Refit
 
         public static ProblemReport
             ExtractProblemReport(Exception exception,
+                ErrorOrWarning errorOrWarning,
+                AppStateDetails? appStateDetails = null,
+                string? resourceName = null,
                 string[]? developerMessages = null,
                 string[]? userMessages = null)
         {
             ProblemReport problemReport;
-            var exceptionMessages =
-                ExtractExceptionMessages(exception);
+            var exceptionMessages = ExceptionMessages.Create(exception);
 
             // TODO Pull from ApiException: full Uri?
             switch (exception)
@@ -26,56 +29,47 @@ namespace XamarinFiles.PdHelpers.Refit
                 case ValidationApiException { Content: { } } validationApiException:
                 {
                     var problemDetails = validationApiException.Content;
-                    var validationHttpMethodName =
-                        validationApiException.HttpMethod.Method;
 
                     problemReport =
-                        ConvertFromProblemDetails(ValidationProblem,
-                            problemDetails, validationHttpMethodName,
-                            developerMessages, userMessages, exceptionMessages);
+                        ConvertFromProblemDetails(problemDetails,
+                            ValidationProblem,
+                            errorOrWarning,
+                            appStateDetails,
+                            validationApiException.RequestMessage,
+                            resourceName,
+                            developerMessages,
+                            userMessages,
+                            exceptionMessages);
 
                     break;
                 }
+                // TODO Add check for ApiException.Content is not PD/VPD
                 case ApiException apiException when
                     !string.IsNullOrWhiteSpace(apiException.Content):
 
                     var problemDetailsStr = apiException.Content;
-                    var genericHttpMethodName =
-                        apiException.HttpMethod.Method;
 
                     problemReport =
-                        ConvertFromProblemDetails(GenericProblem,
-                            problemDetailsStr, genericHttpMethodName,
-                            developerMessages, userMessages, exceptionMessages);
+                        ConvertFromProblemDetails(problemDetailsStr,
+                            GenericProblem,
+                            errorOrWarning,
+                            appStateDetails,
+                            apiException.RequestMessage,
+                            resourceName,
+                            developerMessages,
+                            userMessages,
+                            exceptionMessages);
 
                     break;
                 default:
                     problemReport =
-                        CreateGenericProblemReport(developerMessages,
-                            userMessages, exceptionMessages);
+                        CreateGenericProblemReport(appStateDetails,
+                            developerMessages, userMessages, exceptionMessages);
 
                     break;
             }
 
             return problemReport;
-        }
-
-        // TODO Extend for AggregateExceptions and others
-        private static ExceptionMessages?
-            ExtractExceptionMessages(Exception? exception)
-        {
-            if (exception is null)
-                return null;
-
-            var exceptionMessages = new ExceptionMessages
-            {
-                ExceptionMessage = exception.Message,
-                InnerExceptionMessage = exception.InnerException?.Message
-            };
-
-            // TODO Return other messages
-
-            return exceptionMessages;
         }
     }
 
