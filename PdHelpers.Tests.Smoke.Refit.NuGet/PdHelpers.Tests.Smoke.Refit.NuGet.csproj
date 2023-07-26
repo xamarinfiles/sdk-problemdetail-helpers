@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="XamarinFiles.FancyLogger" Version="2.1.4" />
-    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="2.1.0" />
+    <PackageReference Include="XamarinFiles.FancyLogger" Version="3.0.0" />
+    <PackageReference Include="XamarinFiles.PdHelpers.Refit" Version="3.0.1" />
   </ItemGroup>
 
   <Import Project="..\FancyLogger.Extensions\FancyLogger.Extensions.projitems" Label="Shared" />
