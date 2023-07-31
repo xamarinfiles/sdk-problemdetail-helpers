@@ -1,69 +1,53 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
 namespace XamarinFiles.PdHelpers.Refit.Models
 {
-    // TODO Add other properties like StackTrace?
+    // Human-readable names for code segments (vs compiler names from exception)
     [SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
     [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
     public class SourceDetails
     {
         #region Smart Constructor
 
-        private SourceDetails(string? sourceName,
-            string? sourceLocation,
-            string? sourceOperation)
+        private SourceDetails(string? assemblyName,
+            string? componentName,
+            string? operationName)
         {
-            Name = sourceName;
-            Location = sourceLocation;
-            Operation = sourceOperation;
+            AssemblyName = assemblyName;
+            ComponentName = componentName;
+            OperationName = operationName;
         }
 
         public static SourceDetails?
-            Create(string? sourceName = null,
-                string? sourceLocation = null,
-                string? sourceOperation = null)
+            Create(string? assemblyName = null,
+                string? componentName = null,
+                string? operationName = null)
         {
-            if (sourceName is null
-                && sourceLocation is null
-                && sourceOperation is null)
+            if (assemblyName is null
+                && componentName is null
+                && operationName is null)
                 return null;
 
             var sourceDetails =
-                new SourceDetails(sourceName, sourceLocation, sourceOperation);
+                new SourceDetails(assemblyName, componentName,
+                    operationName);
 
             return sourceDetails;
         }
-
-        public static SourceDetails?
-            Create(Exception exception,
-                string? sourceOperation = null)
-        {
-            var sourceDetails =
-                new SourceDetails(exception.Source,
-                    exception.TargetSite.Name,
-                    sourceOperation);
-
-            return sourceDetails;
-        }
-
-        #endregion
-
-        #region Exception Properties
-
-        [JsonPropertyName("name")]
-        public string? Name { get; }
-
-        [JsonPropertyName("location")]
-        public string? Location { get; }
 
         #endregion
 
         #region User-supplied Properties
 
-        [JsonPropertyName("operation")]
-        public string? Operation { get; }
+        [JsonPropertyName("assemblyName")]
+        public string? AssemblyName { get; }
+
+        [JsonPropertyName("componentName")]
+        public string? ComponentName { get; }
+
+        [JsonPropertyName("operationName")]
+        public string? OperationName { get; }
 
         #endregion
     }

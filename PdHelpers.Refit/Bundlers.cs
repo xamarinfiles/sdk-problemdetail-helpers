@@ -1,31 +1,35 @@
-﻿using XamarinFiles.PdHelpers.Refit.Enums;
+﻿using Refit;
+using XamarinFiles.PdHelpers.Refit.Enums;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static System.Net.HttpStatusCode;
-using static XamarinFiles.PdHelpers.Refit.Enums.DetailsVariant;
+using static XamarinFiles.PdHelpers.Refit.Enums.ProblemVariant;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
     public static class Bundlers
     {
+        // TODO Add more context
+        // TODO Overwrite developer/user messages or add additional?
         internal static ProblemReport
             CreateGenericProblemReport(
-                string? sourceName,
-                string? sourceLocation,
-                string? sourceOperation,
-                string[]? developerMessages,
-                string[]? userMessages,
-                ExceptionMessages? exceptionMessages)
+                ProblemLevel problemLevel,
+                string? assemblyName = null,
+                string? componentName = null,
+                string? operationName = null,
+                ApiException? apiException = null,
+                string? controllerName = null,
+                string? resourceName = null)
         {
-            var sourceDetails =
-                SourceDetails.Create(sourceName, sourceLocation, sourceOperation);
-
             var problemReport =
                 ProblemReport.Create(InternalServerError,
-                    GenericProblem, ErrorOrWarning.Error,
-                    sourceDetails: sourceDetails,
-                    developerMessages: developerMessages,
-                    userMessages: userMessages,
-                    exceptionMessages: exceptionMessages);
+                    GenericProblem,
+                    problemLevel,
+                    assemblyName,
+                    componentName,
+                    operationName,
+                    apiException,
+                    controllerName,
+                    resourceName);
 
             return problemReport;
         }

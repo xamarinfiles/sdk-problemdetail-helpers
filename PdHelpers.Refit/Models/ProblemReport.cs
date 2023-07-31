@@ -1,6 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Refit;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Text.Json.Serialization;
 using XamarinFiles.PdHelpers.Refit.Enums;
 
@@ -14,51 +15,66 @@ namespace XamarinFiles.PdHelpers.Refit.Models
     {
         #region Smart Constructor
 
-        private ProblemReport(DetailsVariant detailsVariant,
-            ErrorOrWarning errorOrWarning,
+        private ProblemReport(ProblemVariant problemVariant,
+            ProblemLevel problemLevel,
             SourceDetails? sourceDetails,
+            ExceptionDetails? exceptionDetails,
             RequestDetails? requestDetails,
             ResponseDetails responseDetails,
-            Messages? importantMessages)
+            OtherMessages? otherMessages)
         {
-            DetailsVariantEnum = detailsVariant;
-            ErrorOrWarningEnum = errorOrWarning;
+            ProblemVariantEnum = problemVariant;
+            ProblemLevelEnum = problemLevel;
             SourceDetails = sourceDetails;
+            ExceptionDetails = exceptionDetails;
             RequestDetails = requestDetails;
             ResponseDetails = responseDetails;
-            ImportantMessages = importantMessages;
+            OtherMessages = otherMessages;
         }
 
         // StatusCode integer variant [current until after .NET Std 2.0 + XF]
         public static ProblemReport
             Create(int statusCodeInt,
-                DetailsVariant detailsVariant,
-                ErrorOrWarning errorOrWarning,
-                SourceDetails? sourceDetails = null,
-                HttpRequestMessage? requestMessage = null,
+                ProblemVariant problemVariant,
+                ProblemLevel problemLevel,
+                // SourceDetails
+                string? assemblyName = null,
+                string? componentName = null,
+                string? operationName = null,
+                // ExceptionDetails / RequestDetails
+                ApiException? apiException = null,
+                string? controllerName = null,
                 string? resourceName = null,
+                // ResponseDetails
                 string? title = null,
                 string? detail = null,
                 string? instance = null,
+                // OtherMessages
                 string[]? developerMessages = null,
-                string[]? userMessages = null,
-                ExceptionMessages? exceptionMessages = null)
+                string[]? userMessages = null)
         {
+            var sourceDetails =
+                SourceDetails.Create(assemblyName, componentName,
+                    operationName);
+
+            var exceptionDetails = ExceptionDetails.Create(apiException);
+
             var requestDetails =
-                RequestDetails.Create(requestMessage, resourceName);
+                RequestDetails.Create(apiException?.RequestMessage,
+                    controllerName, resourceName);
 
             var responseDetails =
                 ResponseDetails.Create(statusCodeInt, instanceUri: instance,
                     problemSummary: title, problemExplanation: detail);
 
-            var importantMessages =
-                Messages.Create(developerMessages, userMessages,
-                    exceptionMessages);
+            var otherMessages =
+                OtherMessages.Create(developerMessages?.ToList(),
+                    userMessages?.ToList());
 
             var problemReport =
-                new ProblemReport(detailsVariant, errorOrWarning,
-                    sourceDetails, requestDetails, responseDetails,
-                    importantMessages);
+                new ProblemReport(problemVariant, problemLevel,
+                    sourceDetails, exceptionDetails, requestDetails,
+                    responseDetails, otherMessages);
 
             return problemReport;
         }
@@ -66,24 +82,27 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         // StatusCode enum variant [alternative / future after .NET Std 2.0 + XF]
         public static ProblemReport
             Create(HttpStatusCode statusCode,
-                DetailsVariant detailsVariant,
-                ErrorOrWarning errorOrWarning,
-                SourceDetails? sourceDetails = null,
-                HttpRequestMessage? requestMessage = null,
+                ProblemVariant problemVariant,
+                ProblemLevel problemLevel,
+                string? assemblyName = null,
+                string? componentName = null,
+                string? operationName = null,
+                ApiException? apiException = null,
+                string? controllerName = null,
                 string? resourceName = null,
                 string? title = null,
                 string? detail = null,
                 string? instance = null,
                 string[]? developerMessages = null,
-                string[]? userMessages = null,
-                ExceptionMessages? exceptionMessages = null)
+                string[]? userMessages = null)
         {
             var statusCodeInt = (int)statusCode;
 
             var problemReport =
-                Create(statusCodeInt, detailsVariant, errorOrWarning,
-                    sourceDetails, requestMessage, resourceName, title, detail,
-                    instance, developerMessages, userMessages, exceptionMessages);
+                Create(statusCodeInt, problemVariant, problemLevel,
+                    assemblyName, componentName, operationName, apiException,
+                    controllerName, resourceName, title, detail, instance,
+                    developerMessages, userMessages);
 
             return problemReport;
         }
@@ -93,12 +112,12 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         #region Source Format (ProblemDetails or ValidationProblemDetails)
 
         [JsonIgnore]
-        public DetailsVariant DetailsVariantEnum { get; }
+        public ProblemVariant ProblemVariantEnum { get; }
 
-        [JsonPropertyName("detailsVariant")]
+        [JsonPropertyName("problemVariant")]
         public string
-            DetailsVariantName =>
-                DetailsVariantEnum == DetailsVariant.ValidationProblem
+            ProblemVariant =>
+                ProblemVariantEnum == Enums.ProblemVariant.ValidationProblem
                     ? "ValidationProblemDetails"
                     : "ProblemDetails";
 
@@ -107,30 +126,37 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         #region Source Condition (Error or Warning)
 
         [JsonIgnore]
-        public ErrorOrWarning ErrorOrWarningEnum { get; }
+        public ProblemLevel ProblemLevelEnum { get; }
 
-        [JsonPropertyName("errorOrWarning")]
-        public string ErrorOrWarning => ErrorOrWarningEnum.ToString();
+        [JsonPropertyName("problemLevel")]
+        public string ProblemLevel => ProblemLevelEnum.ToString();
 
         #endregion
 
         #region App State Details
 
-        [JsonPropertyName("sourceDetails")]
+        [JsonPropertyName("source")]
         public SourceDetails? SourceDetails { get; }
+
+        #endregion
+
+        #region Exception Details
+
+        [JsonPropertyName("exception")]
+        public ExceptionDetails? ExceptionDetails { get; }
 
         #endregion
 
         #region HttpRequestMessage fields
 
-        [JsonPropertyName("requestDetails")]
+        [JsonPropertyName("request")]
         public RequestDetails? RequestDetails { get; }
 
         #endregion
 
         #region ProblemDetails Response Fields (IETF RFC 7807)
 
-        [JsonPropertyName("responseDetails")]
+        [JsonPropertyName("response")]
         public ResponseDetails ResponseDetails { get; }
 
         #endregion
@@ -138,7 +164,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         #region Expected Messages Promoted from Extensions/Errors
 
         [JsonPropertyName("messages")]
-        public Messages? ImportantMessages { get; }
+        public OtherMessages? OtherMessages { get; }
 
         #endregion
 

@@ -4,7 +4,8 @@ using XamarinFiles.PdHelpers.Refit.Enums;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
 using static XamarinFiles.PdHelpers.Refit.Converters;
-using static XamarinFiles.PdHelpers.Refit.Enums.DetailsVariant;
+using static XamarinFiles.PdHelpers.Refit.Enums.ProblemVariant;
+using static XamarinFiles.PdHelpers.Refit.Enums.ProblemLevel;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
@@ -14,17 +15,14 @@ namespace XamarinFiles.PdHelpers.Refit
 
         public static ProblemReport
             ExtractProblemReport(Exception exception,
-                ErrorOrWarning errorOrWarning,
-                string? sourceOperation = null,
-                string? resourceName = null,
-                string[]? developerMessages = null,
-                string[]? userMessages = null)
+                ProblemLevel problemLevel,
+                string? assemblyName = null,
+                string? componentName = null,
+                string? operationName = null,
+                string? controllerName = null,
+                string? resourceName = null)
         {
             ProblemReport problemReport;
-
-            // TODO Pull exception info directly or pass exception to converter
-            var sourceDetails = SourceDetails.Create(exception, sourceOperation);
-            var exceptionMessages = ExceptionMessages.Create(exception);
 
             // TODO Pull from ApiException: full Uri?
             switch (exception)
@@ -36,15 +34,13 @@ namespace XamarinFiles.PdHelpers.Refit
                     problemReport =
                         ConvertFromProblemDetails(problemDetails,
                             ValidationProblem,
-                            errorOrWarning,
-                            sourceName: sourceDetails?.Name,
-                            sourceLocation: sourceDetails?.Location,
-                            sourceOperation,
-                            validationApiException.RequestMessage,
-                            resourceName,
-                            developerMessages,
-                            userMessages,
-                            exceptionMessages);
+                            problemLevel,
+                            assemblyName,
+                            componentName,
+                            operationName,
+                            validationApiException,
+                            controllerName,
+                            resourceName);
 
                     break;
                 }
@@ -57,26 +53,21 @@ namespace XamarinFiles.PdHelpers.Refit
                     problemReport =
                         ConvertFromProblemDetails(problemDetailsStr,
                             GenericProblem,
-                            errorOrWarning,
-                            sourceName: sourceDetails?.Name,
-                            sourceLocation: sourceDetails?.Location,
-                            sourceOperation,
-                            apiException.RequestMessage,
-                            resourceName,
-                            developerMessages,
-                            userMessages,
-                            exceptionMessages);
+                            problemLevel,
+                            assemblyName,
+                            componentName,
+                            operationName,
+                            apiException,
+                            controllerName,
+                            resourceName);
 
                     break;
                 default:
                     problemReport =
-                        CreateGenericProblemReport(
-                            sourceName: sourceDetails?.Name,
-                            sourceLocation: sourceDetails?.Location,
-                            sourceOperation,
-                            developerMessages,
-                            userMessages,
-                            exceptionMessages);
+                        CreateGenericProblemReport(Error, assemblyName,
+                            componentName, operationName,
+                            controllerName: controllerName,
+                            resourceName: resourceName);
 
                     break;
             }
