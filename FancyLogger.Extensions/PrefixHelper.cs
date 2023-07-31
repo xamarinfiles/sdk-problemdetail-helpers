@@ -9,7 +9,7 @@ using static System.String;
 // Solution: copy shared project to each repo and add to each test project
 namespace XamarinFiles.FancyLogger.Extensions
 {
-    internal static class LogPrefixHelper
+    internal static class PrefixHelper
     {
         #region Methods
 
