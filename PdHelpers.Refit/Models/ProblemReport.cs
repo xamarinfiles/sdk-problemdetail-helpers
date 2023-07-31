@@ -1,4 +1,4 @@
-﻿using Refit;
+using Refit;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
@@ -115,11 +115,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         public ProblemVariant ProblemVariantEnum { get; }
 
         [JsonPropertyName("problemVariant")]
-        public string
-            ProblemVariant =>
-                ProblemVariantEnum == Enums.ProblemVariant.ValidationProblem
-                    ? "ValidationProblemDetails"
-                    : "ProblemDetails";
+        public string ProblemVariant => ProblemVariantEnum.ToString();
 
         #endregion
 

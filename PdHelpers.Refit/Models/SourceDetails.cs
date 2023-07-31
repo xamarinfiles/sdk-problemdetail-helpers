@@ -40,13 +40,13 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
         #region User-supplied Properties
 
-        [JsonPropertyName("assemblyName")]
+        [JsonPropertyName("assembly")]
         public string? AssemblyName { get; }
 
-        [JsonPropertyName("componentName")]
+        [JsonPropertyName("component")]
         public string? ComponentName { get; }
 
-        [JsonPropertyName("operationName")]
+        [JsonPropertyName("operation")]
         public string? OperationName { get; }
 
         #endregion
