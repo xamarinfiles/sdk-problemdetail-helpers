@@ -1,4 +1,4 @@
-using Refit;
+﻿using Refit;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +8,9 @@ using static System.String;
 using static System.Text.Json.JsonSerializer;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
 using static XamarinFiles.PdHelpers.Refit.Enums.ProblemLevel;
+
+// Ignore all JSON serialization/deserialization exceptions here as bad data.
+#pragma warning disable CA1031
 
 namespace XamarinFiles.PdHelpers.Refit
 {
@@ -93,10 +96,7 @@ namespace XamarinFiles.PdHelpers.Refit
                         Deserialize<ProblemDetails>(problemDetailsStr,
                             JsonSerializerReadOptions);
                 }
-// "Do not catch general exception types" doesn't apply.  Ignore all exceptions.
-#pragma warning disable CA1031
                 catch
-#pragma warning restore CA1031
                 {
                     problemDetails = null;
                 }
@@ -194,10 +194,7 @@ namespace XamarinFiles.PdHelpers.Refit
 
                 return obj;
             }
-// "Do not catch general exception types" doesn't apply.  Ignore all exceptions.
-#pragma warning disable CA1031
             catch
-#pragma warning restore CA1031
             {
                 return default;
             }
