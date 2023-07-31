@@ -1,4 +1,4 @@
-using Refit;
+﻿using Refit;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
@@ -153,7 +153,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         #region ProblemDetails Response Fields (IETF RFC 7807)
 
         [JsonPropertyName("response")]
-        public ResponseDetails ResponseDetails { get; }
+        public ResponseDetails? ResponseDetails { get; }
 
         #endregion
 
