@@ -1,4 +1,4 @@
-﻿using Refit;
+using Refit;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,6 +11,7 @@ using static XamarinFiles.PdHelpers.Refit.Enums.ProblemLevel;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
+    // TODO Make converter smart enough to adjust to ProblemVariant of PD vs VPD
     // TODO Pass exception
     public static class Converters
     {
@@ -24,9 +25,9 @@ namespace XamarinFiles.PdHelpers.Refit
                 PropertyNameCaseInsensitive = true
             };
 
-        private const string DeveloperMessages = "developerMessages";
+        private const string DevMessagesKey = "developerMessages";
 
-        private const string UserMessages = "userMessages";
+        private const string UserMessagesKey = "userMessages";
 
         #endregion
 
@@ -55,11 +56,8 @@ namespace XamarinFiles.PdHelpers.Refit
             }
             else
             {
-                var extensions = problemDetails.Extensions;
-                var developerMessages =
-                    GetExtensionsValue<string[]>(extensions, DeveloperMessages);
-                var userMessages =
-                    GetExtensionsValue<string[]>(extensions, UserMessages);
+                var (developerMessages, userMessages) =
+                    GetMessages(problemDetails, problemVariant);
 
                 problemReport =
                     ProblemReport.Create(problemDetails.Status, problemVariant,
@@ -112,11 +110,76 @@ namespace XamarinFiles.PdHelpers.Refit
             return problemReport;
         }
 
-        private static T? GetExtensionsValue<T>(
-            IDictionary<string, object> dictionary,
-            string key)
+        private static (string[]?, string[]?)
+            GetMessages(ProblemDetails problemDetails,
+                ProblemVariant problemVariant)
         {
-            if (!dictionary.TryGetValue(key, out var jsonObj))
+            string[]? developerMessages;
+            string[]? userMessages;
+
+            switch (problemVariant)
+            {
+                case ProblemVariant.GenericProblem:
+                    var extensions = problemDetails.Extensions;
+
+                    developerMessages =
+                        GetExtensionsValue<string[]>(extensions, DevMessagesKey);
+                    userMessages =
+                        GetExtensionsValue<string[]>(extensions, UserMessagesKey);
+
+                    break;
+                case ProblemVariant.ValidationProblem:
+                    var errors = problemDetails.Errors;
+
+                    developerMessages =
+                        GetErrorsValue(errors, DevMessagesKey);
+                    userMessages =
+                        GetErrorsValue(errors, UserMessagesKey);
+
+                    break;
+                default:
+                    developerMessages = null;
+                    userMessages = null;
+
+                    break;
+            }
+
+            return (developerMessages, userMessages);
+
+        }
+
+        private static string[]?
+            GetErrorsValue(IDictionary<string, string[]> errors,
+                string key)
+        {
+            if (!errors.TryGetValue(key, out var jsonObj))
+                return default;
+
+            try
+            {
+                // HACK Find more direct way if performance is an issue
+                var jsonStr = Serialize(jsonObj);
+
+                if (IsNullOrWhiteSpace(jsonStr))
+                    return default;
+
+                var strArray = Deserialize<string[]>(jsonStr);
+
+                return strArray;
+            }
+            catch
+            {
+                return default;
+            }
+
+        }
+
+
+        private static T?
+            GetExtensionsValue<T>(IDictionary<string, object> extensions,
+                string key)
+        {
+            if (!extensions.TryGetValue(key, out var jsonObj))
                 return default;
 
             try
