@@ -20,7 +20,9 @@ namespace XamarinFiles.PdHelpers.Refit
                 string? componentName = null,
                 string? operationName = null,
                 string? controllerName = null,
-                string? resourceName = null)
+                string? resourceName = null,
+                string[]? developerMessages = null,
+                string[]? userMessages = null)
         {
             ProblemReport problemReport;
 
@@ -64,10 +66,14 @@ namespace XamarinFiles.PdHelpers.Refit
                     break;
                 default:
                     problemReport =
-                        CreateGenericProblemReport(Error, assemblyName,
-                            componentName, operationName,
+                        CreateGenericProblemReport(Error,
+                            assemblyName,
+                            componentName,
+                            operationName,
                             controllerName: controllerName,
-                            resourceName: resourceName);
+                            resourceName: resourceName,
+                            developerMessages: developerMessages,
+                            userMessages: userMessages);
 
                     break;
             }

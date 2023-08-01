@@ -18,7 +18,9 @@ namespace XamarinFiles.PdHelpers.Refit
                 string? operationName = null,
                 ApiException? apiException = null,
                 string? controllerName = null,
-                string? resourceName = null)
+                string? resourceName = null,
+                string[]? developerMessages = null,
+                string[]? userMessages = null)
         {
             var problemReport =
                 ProblemReport.Create(InternalServerError,
@@ -29,7 +31,9 @@ namespace XamarinFiles.PdHelpers.Refit
                     operationName,
                     apiException,
                     controllerName,
-                    resourceName);
+                    resourceName,
+                    developerMessages: developerMessages,
+                    userMessages: userMessages);
 
             return problemReport;
         }
