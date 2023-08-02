@@ -1,4 +1,4 @@
-﻿using Refit;
+﻿using System;
 using XamarinFiles.PdHelpers.Refit.Enums;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static System.Net.HttpStatusCode;
@@ -8,7 +8,6 @@ namespace XamarinFiles.PdHelpers.Refit
 {
     public static class Bundlers
     {
-        // TODO Add more context
         // TODO Overwrite developer/user messages or add additional?
         internal static ProblemReport
             CreateGenericProblemReport(
@@ -16,7 +15,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 string? assemblyName = null,
                 string? componentName = null,
                 string? operationName = null,
-                ApiException? apiException = null,
+                Exception? exception = null,
                 string? controllerName = null,
                 string? resourceName = null,
                 string[]? developerMessages = null,
@@ -29,7 +28,7 @@ namespace XamarinFiles.PdHelpers.Refit
                     assemblyName,
                     componentName,
                     operationName,
-                    apiException,
+                    exception,
                     controllerName,
                     resourceName,
                     developerMessages: developerMessages,

@@ -1,4 +1,5 @@
 ﻿using Refit;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net;
@@ -42,7 +43,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
                 string? componentName = null,
                 string? operationName = null,
                 // ExceptionDetails / RequestDetails
-                ApiException? apiException = null,
+                Exception? exception = null,
                 string? controllerName = null,
                 string? resourceName = null,
                 // ResponseDetails
@@ -57,11 +58,15 @@ namespace XamarinFiles.PdHelpers.Refit.Models
                 SourceDetails.Create(assemblyName, componentName,
                     operationName);
 
-            var exceptionDetails = ExceptionDetails.Create(apiException);
+            var exceptionDetails = ExceptionDetails.Create(exception);
 
-            var requestDetails =
-                RequestDetails.Create(apiException?.RequestMessage,
-                    controllerName, resourceName);
+            RequestDetails? requestDetails = null;
+            if (exception is ApiException apiException)
+            {
+                requestDetails =
+                    RequestDetails.Create(apiException.RequestMessage,
+                        controllerName, resourceName);
+            }
 
             var responseDetails =
                 ResponseDetails.Create(statusCodeInt, instanceUri: instance,
@@ -87,7 +92,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
                 string? assemblyName = null,
                 string? componentName = null,
                 string? operationName = null,
-                ApiException? apiException = null,
+                Exception? exception = null,
                 string? controllerName = null,
                 string? resourceName = null,
                 string? title = null,
@@ -100,7 +105,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
             var problemReport =
                 Create(statusCodeInt, problemVariant, problemLevel,
-                    assemblyName, componentName, operationName, apiException,
+                    assemblyName, componentName, operationName, exception,
                     controllerName, resourceName, title, detail, instance,
                     developerMessages, userMessages);
 

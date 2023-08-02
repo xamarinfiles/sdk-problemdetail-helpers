@@ -1,4 +1,5 @@
 ﻿using Refit;
+using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -9,13 +10,12 @@ using static System.Text.Json.JsonSerializer;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
 using static XamarinFiles.PdHelpers.Refit.Enums.ProblemLevel;
 
-// Ignore all JSON serialization/deserialization exceptions here as bad data.
+// Ignore all JSON serialization/deserialization exceptions here as bad data
 #pragma warning disable CA1031
 
 namespace XamarinFiles.PdHelpers.Refit
 {
     // TODO Make converter smart enough to adjust to ProblemVariant of PD vs VPD
-    // TODO Pass exception
     public static class Converters
     {
         #region Fields
@@ -44,7 +44,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 string? assemblyName = null,
                 string? componentName = null,
                 string? operationName = null,
-                ApiException? apiException = null,
+                Exception? exception = null,
                 string? controllerName = null,
                 string? resourceName = null)
         {
@@ -53,9 +53,13 @@ namespace XamarinFiles.PdHelpers.Refit
             if (problemDetails is null)
             {
                 problemReport =
-                    CreateGenericProblemReport(Error, assemblyName,
-                        componentName, operationName, apiException,
-                        controllerName, resourceName);
+                    CreateGenericProblemReport(Error,
+                        assemblyName,
+                        componentName,
+                        operationName,
+                        exception,
+                        controllerName,
+                        resourceName);
             }
             else
             {
@@ -63,17 +67,26 @@ namespace XamarinFiles.PdHelpers.Refit
                     GetMessages(problemDetails, problemVariant);
 
                 problemReport =
-                    ProblemReport.Create(problemDetails.Status, problemVariant,
-                        problemLevel, assemblyName, componentName,
-                        operationName, apiException, controllerName,
-                        resourceName, problemDetails.Title,
-                        problemDetails.Detail, problemDetails.Instance,
-                        developerMessages, userMessages);
+                    ProblemReport.Create(problemDetails.Status,
+                        problemVariant,
+                        problemLevel,
+                        assemblyName,
+                        componentName,
+                        operationName,
+                        exception,
+                        controllerName,
+                        resourceName,
+                        problemDetails.Title,
+                        problemDetails.Detail,
+                        problemDetails.Instance,
+                        developerMessages,
+                        userMessages);
             }
 
             return problemReport;
         }
 
+        // TODO Pull other context info when ApiException.Content string is not PD
         // ProblemDetails string variant
         public static ProblemReport
             ConvertFromProblemDetails(string? problemDetailsStr,
@@ -82,7 +95,7 @@ namespace XamarinFiles.PdHelpers.Refit
                 string? assemblyName = null,
                 string? componentName = null,
                 string? operationName = null,
-                ApiException? apiException = null,
+                Exception? exception = null,
                 string? controllerName = null,
                 string? resourceName = null)
         {
@@ -103,9 +116,15 @@ namespace XamarinFiles.PdHelpers.Refit
             }
 
             var problemReport =
-                ConvertFromProblemDetails(problemDetails, problemVariant,
-                    problemLevel, assemblyName, componentName, operationName,
-                    apiException, controllerName, resourceName);
+                ConvertFromProblemDetails(problemDetails,
+                    problemVariant,
+                    problemLevel,
+                    assemblyName,
+                    componentName,
+                    operationName,
+                    exception,
+                    controllerName,
+                    resourceName);
 
             return problemReport;
         }

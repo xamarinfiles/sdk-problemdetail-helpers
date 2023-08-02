@@ -1,5 +1,6 @@
 ﻿using Refit;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using XamarinFiles.PdHelpers.Refit.Enums;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static XamarinFiles.PdHelpers.Refit.Bundlers;
@@ -9,6 +10,7 @@ using static XamarinFiles.PdHelpers.Refit.Enums.ProblemLevel;
 
 namespace XamarinFiles.PdHelpers.Refit
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class Extractors
     {
         #region Methods
@@ -26,10 +28,10 @@ namespace XamarinFiles.PdHelpers.Refit
         {
             ProblemReport problemReport;
 
-            // TODO Pull from ApiException: full Uri?
+            // TODO Pull from ValidationApiException/ApiException: full Uri?
             switch (exception)
             {
-                case ValidationApiException { Content: { } } validationApiException:
+                case ValidationApiException { Content: not null } validationApiException:
                 {
                     var problemDetails = validationApiException.Content;
 
@@ -70,10 +72,11 @@ namespace XamarinFiles.PdHelpers.Refit
                             assemblyName,
                             componentName,
                             operationName,
-                            controllerName: controllerName,
-                            resourceName: resourceName,
-                            developerMessages: developerMessages,
-                            userMessages: userMessages);
+                            exception,
+                            controllerName,
+                            resourceName,
+                            developerMessages,
+                            userMessages);
 
                     break;
             }
