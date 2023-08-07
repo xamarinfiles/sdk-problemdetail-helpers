@@ -10,15 +10,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="XamarinFiles.FancyLogger" Version="3.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+    <PackageReference Include="Refit" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\PdHelpers.Refit\PdHelpers.Refit.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="XamarinFiles.FancyLogger">
+      <HintPath>..\..\library-fancy-logger\FancyLogger\bin\Release\netstandard2.0\XamarinFiles.FancyLogger.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <Import Project="..\FancyLogger.Extensions\FancyLogger.Extensions.projitems" Label="Shared" />
 
-  <Import Project="..\PdHelpers.Tests.Smoke.Refit.Shared\PdHelpers.Tests.Smoke.Refit.Shared.projitems" Label="Shared" />
+
+  <!-- TODO Replace first ItemGroup with FancyLogger NuGet
+  -->
 
 </Project>
