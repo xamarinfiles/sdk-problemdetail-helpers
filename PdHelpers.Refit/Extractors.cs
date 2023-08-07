@@ -15,8 +15,8 @@ namespace XamarinFiles.PdHelpers.Refit
     {
         #region Methods
 
-        public static ProblemReport
-            ExtractProblemReport(Exception exception,
+        public static ProblemReport?
+            ExtractProblemReport(Exception? exception,
                 ProblemLevel problemLevel,
                 string? assemblyName = null,
                 string? componentName = null,
@@ -26,6 +26,9 @@ namespace XamarinFiles.PdHelpers.Refit
                 string[]? developerMessages = null,
                 string[]? userMessages = null)
         {
+            if (exception == null)
+                return null;
+
             ProblemReport problemReport;
 
             // TODO Pull from ValidationApiException/ApiException: full Uri?
