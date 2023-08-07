@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
-using static System.String;
 
 namespace XamarinFiles.PdHelpers.Refit.Models
 {
@@ -15,9 +14,7 @@ namespace XamarinFiles.PdHelpers.Refit.Models
             string? innerExceptionMessage)
         {
             OuterExceptionMessage = outerExceptionMessage;
-
-            if (!IsNullOrWhiteSpace(innerExceptionMessage))
-                InnerExceptionMessage = innerExceptionMessage;
+            InnerExceptionMessage = innerExceptionMessage;
         }
 
         public static ExceptionMessages? Create(Exception? exception)
@@ -36,15 +33,15 @@ namespace XamarinFiles.PdHelpers.Refit.Models
 
         #region Properties
 
-        [JsonPropertyName("outerExceptionMessage")]
+        [JsonPropertyName("outerException")]
         public string OuterExceptionMessage { get; }
 
-        [JsonPropertyName("innerExceptionMessage")]
+        [JsonPropertyName("innerException")]
         public string? InnerExceptionMessage { get; }
 
         // TODO Break out other exception messages when add logic to pull them
-        //[JsonPropertyName("otherExceptionMessages")]
-        //public IDictionary<string, string> OtherExceptionMessages { get; } =
+        //[JsonPropertyName("otherExceptions")]
+        //public IDictionary<string, string> OtherExceptions { get; } =
         //    new Dictionary<string, string>();
 
         #endregion

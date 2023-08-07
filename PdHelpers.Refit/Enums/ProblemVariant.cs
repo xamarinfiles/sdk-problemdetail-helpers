@@ -1,6 +1,6 @@
 ﻿namespace XamarinFiles.PdHelpers.Refit.Enums
 {
-    public enum DetailsVariant
+    public enum ProblemVariant
     {
         GenericProblem,
         ValidationProblem

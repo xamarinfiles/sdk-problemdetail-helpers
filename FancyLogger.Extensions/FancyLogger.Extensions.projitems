@@ -10,6 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AssemblyLogger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LogPrefixHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)PrefixHelper.cs" />
   </ItemGroup>
 </Project>

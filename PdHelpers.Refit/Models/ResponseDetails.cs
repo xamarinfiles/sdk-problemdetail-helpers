@@ -2,6 +2,10 @@
 using System.Text.Json.Serialization;
 using static XamarinFiles.PdHelpers.Shared.StatusCodeDetails;
 
+// Incoming PD/VPD field Instance is string.  Leave in original format.
+#pragma warning disable CA1054
+#pragma warning disable CA1056
+
 namespace XamarinFiles.PdHelpers.Refit.Models
 {
     // TODO Change SpecificUri from string? to Uri? (Warning CA1054)

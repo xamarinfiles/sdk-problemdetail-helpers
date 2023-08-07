@@ -15,45 +15,57 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         #region Smart Constructor
 
         private RequestDetails(HttpRequestMessage? requestMessage,
+            string? controllerName,
             string? resourceName)
         {
             HttpMethod = requestMessage?.Method;
             Uri = requestMessage?.RequestUri;
-            ResourceName = resourceName;
+
+            Controller = controllerName;
+            Resource = resourceName;
         }
 
-        public static RequestDetails? Create(
-            HttpRequestMessage? requestMessage = null,
-            string? resourceName = null)
+        public static RequestDetails?
+            Create(HttpRequestMessage? requestMessage = null,
+                string? controllerName = null,
+                string? resourceName = null)
         {
             if (requestMessage is null
+                && controllerName is null
                 && resourceName is null)
                 return null;
 
             var requestDetails =
-                new RequestDetails(requestMessage, resourceName);
+                new RequestDetails(requestMessage, controllerName, resourceName);
 
             return requestDetails;
         }
 
         #endregion
 
-        #region Properties
+        #region HttpRequestMessage Properties
 
         [JsonIgnore]
-        public HttpMethod? HttpMethod { get; }
+        internal HttpMethod? HttpMethod { get; }
 
-        [JsonPropertyName("requestHttpMethod")]
-        public string? HttpMethodName => HttpMethod?.Method;
+        [JsonPropertyName("method")]
+        public string? Method => HttpMethod?.Method;
 
-        [JsonPropertyName("resourceName")]
-        public string? ResourceName { get; }
-
-        [JsonIgnore]
+        [JsonPropertyName("uri")]
         public Uri? Uri { get; }
 
-        [JsonPropertyName("requestUri")]
-        public string? UriString => Uri?.ToString();
+        //[JsonPropertyName("uri")]
+        //public string? UriStr => Uri?.ToString();
+
+        #endregion
+
+        #region Passed Properties
+
+        [JsonPropertyName("controller")]
+        public string? Controller { get; }
+
+        [JsonPropertyName("resource")]
+        public string? Resource { get; }
 
         #endregion
     }
