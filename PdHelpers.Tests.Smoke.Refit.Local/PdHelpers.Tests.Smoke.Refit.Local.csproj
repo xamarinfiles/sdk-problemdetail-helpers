@@ -28,8 +28,4 @@
 
   <Import Project="..\FancyLogger.Extensions\FancyLogger.Extensions.projitems" Label="Shared" />
 
-
-  <!-- TODO Replace first ItemGroup with FancyLogger NuGet
-  -->
-
 </Project>
