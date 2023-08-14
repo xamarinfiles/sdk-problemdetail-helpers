@@ -10,11 +10,11 @@ namespace XamarinFiles.PdHelpers.Refit.Models
     {
         #region Smart Constructor
 
-        private ExceptionMessages(string outerExceptionMessage,
-            string? innerExceptionMessage)
+        private ExceptionMessages(string outerException,
+            string? innerException)
         {
-            OuterExceptionMessage = outerExceptionMessage;
-            InnerExceptionMessage = innerExceptionMessage;
+            OuterException = outerException;
+            InnerException = innerException;
         }
 
         public static ExceptionMessages? Create(Exception? exception)
@@ -34,10 +34,10 @@ namespace XamarinFiles.PdHelpers.Refit.Models
         #region Properties
 
         [JsonPropertyName("outerException")]
-        public string OuterExceptionMessage { get; }
+        public string OuterException { get; }
 
         [JsonPropertyName("innerException")]
-        public string? InnerExceptionMessage { get; }
+        public string? InnerException { get; }
 
         // TODO Break out other exception messages when add logic to pull them
         //[JsonPropertyName("otherExceptions")]

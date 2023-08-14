@@ -1,6 +1,7 @@
 ﻿#define ASSEMBLY_LOGGING
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -8,6 +9,7 @@ using Refit;
 using XamarinFiles.FancyLogger;
 using XamarinFiles.FancyLogger.Extensions;
 using XamarinFiles.FancyLogger.Options;
+using XamarinFiles.PdHelpers.Refit;
 using XamarinFiles.PdHelpers.Refit.Models;
 using static System.Net.HttpStatusCode;
 using static System.Text.Json.JsonSerializer;
@@ -156,38 +158,48 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Local
             FancyLogger.LogSubsection(
                 "Test Extracting Problem Report From Validation Problem Details");
 
-            var jsonValidationProblemDetails = "{\r\n    \"errors\": {\r\n        \"developerMessages\": [\r\n            \"Unexpected character encountered while parsing value: ,. Path 'userName', line 2, position 16.\"\r\n        ],\r\n        \"userMessages\": [\r\n            \"Please send a properly-formatted JSON object and try again\"\r\n        ]\r\n    },\r\n    \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.1\",\r\n    \"title\": \"Bad Request\",\r\n    \"status\": 400,\r\n    \"detail\": \"Invalid fields: userName\",\r\n    \"instance\": \"/api/authentication/login\"\r\n}";
+            var jsonValidationDetails = "{\r\n    \"errors\": {\r\n        \"developerMessages\": [\r\n            \"Unexpected character encountered while parsing value: ,. Path 'userName', line 2, position 16.\"\r\n        ],\r\n        \"userMessages\": [\r\n            \"Please send a properly-formatted JSON object and try again\"\r\n        ]\r\n    },\r\n    \"type\": \"https://tools.ietf.org/html/rfc7231#section-6.5.1\",\r\n    \"title\": \"Bad Request\",\r\n    \"status\": 400,\r\n    \"detail\": \"Invalid fields: userName\",\r\n    \"instance\": \"/api/authentication/login\"\r\n}";
 
-            var validationProblemDetails =
-                Deserialize<ProblemDetails>(jsonValidationProblemDetails);
+            var validationDetails =
+                Deserialize<ProblemDetails>(jsonValidationDetails);
             FancyLogger.LogTrace(
-                Serialize(validationProblemDetails, DefaultWriteJsonOptions),
+                Serialize(validationDetails, DefaultWriteJsonOptions),
                 newLineAfter: true);
 
-            var jsonValidationProblemDetailsReport =
-                ConvertFromProblemDetails(jsonValidationProblemDetails,
+            var jsonValidationReport =
+                ConvertFromProblemDetails(jsonValidationDetails,
                     ValidationProblem,
                     Error);
+            FancyLogger.LogProblemReport(jsonValidationReport);
 
-            FancyLogger.LogProblemReport(jsonValidationProblemDetailsReport);
+            var (jsonValidationReportSummary,
+                    jsonValidationReportContext) =
+                Extractors.ExtractEventContext(jsonValidationReport);
+            FancyLogger.LogObject<Dictionary<string, string>>(
+                jsonValidationReportContext, label: jsonValidationReportSummary);
 
             FancyLogger.LogSubsection(
                 "Test Extracting Problem Report From Problem Details");
 
             var jsonProblemDetails = "{\r\n  \"Errors\": {},\r\n  \"Type\": \"https://tools.ietf.org/html/rfc7235#section-3.1\",\r\n  \"Title\": \"Invalid Credentials\",\r\n  \"Status\": 401,\r\n  \"Detail\": \"Username and/or Password do not match\",\r\n  \"Instance\": \"/api/authentication/login\",\r\n  \"userMessages\": [\r\n    \"Please check your Username and Password and try again\"\r\n  ]\r\n}";
 
-            var problemDetails = Deserialize<ProblemDetails>(jsonProblemDetails);
+            var problemDetails =
+                Deserialize<ProblemDetails>(jsonProblemDetails);
             FancyLogger.LogTrace(
                 Serialize(problemDetails, DefaultWriteJsonOptions),
                 newLineAfter: true);
 
-            var jsonProblemDetailsReport =
+            var jsonProblemReport =
                 ConvertFromProblemDetails(jsonProblemDetails,
                     GenericProblem,
                     Error);
+            FancyLogger.LogProblemReport(jsonProblemReport);
 
-            FancyLogger.LogProblemReport(jsonProblemDetailsReport);
-
+            var (jsonProblemReportSummary,
+                    jsonProblemReportContext) =
+                Extractors.ExtractEventContext(jsonProblemReport);
+            FancyLogger.LogObject<Dictionary<string, string>>(
+                jsonProblemReportContext, label: jsonProblemReportSummary);
         }
 
         // TODO
@@ -211,6 +223,9 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Local
         private static void TestGenerateLoginProblemReport()
         {
             FancyLogger!.LogSection("Test Creating Problem Report");
+
+            FancyLogger.LogSubsection(
+                "Test Creating Problem Report For Error");
 
             const string fakeAssemblyName = "PdHelpers Smoke Tester";
             const string fakeComponentName = "Login Page";
@@ -239,8 +254,16 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Local
                         "The Password field is required."
                     },
                     userMessages: LoginFailedUserMessages);
-
             FancyLogger.LogProblemReport(badRequestProblem);
+
+            var (badRequestProblemSummary,
+                    badRequestProblemContext) =
+                Extractors.ExtractEventContext(badRequestProblem);
+            FancyLogger.LogObject<Dictionary<string, string>>(
+                badRequestProblemContext, label: badRequestProblemSummary);
+
+            FancyLogger.LogSubsection(
+                "Test Creating Problem Report For Warning");
 
             // 401 - Unauthorized - Warning
 
@@ -259,6 +282,12 @@ namespace XamarinFiles.PdHelpers.Tests.Smoke.Refit.Local
                     userMessages: LoginFailedUserMessages);
 
             FancyLogger.LogProblemReport(unauthorizedProblem);
+
+            var (unauthorizedProblemSummary,
+                    unauthorizedProblemContext) =
+                Extractors.ExtractEventContext(unauthorizedProblem);
+            FancyLogger.LogObject<Dictionary<string, string>>(
+                unauthorizedProblemContext, label: unauthorizedProblemSummary);
 
             // TODO Add other ProblemDetails tests from other repo
         }
