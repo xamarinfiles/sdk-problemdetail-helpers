@@ -1,0 +1,261 @@
+﻿Tests.Smoke.Refit.Local: Information: 	Logger created
+
+Tests.Smoke.Refit.Local: Information: 	XamarinFiles Assemblies ####################################
+
+Tests.Smoke.Refit.Local: Debug:       	Ancestor Path	=
+	D:\Sync\Code\GitHub\xamarinfiles
+
+Tests.Smoke.Refit.Local: Information: 	Executing Assembly:	XamarinFiles.PdHelpers.Tests.Smoke.Refit.Local
+
+Tests.Smoke.Refit.Local: Debug:       	Relative Path	=
+	\library-problemdetails-helpers\PdHelpers.Tests.Smoke.Refit.Local\bin\Debug\netcoreapp3.1
+
+Tests.Smoke.Refit.Local: Debug:       	Version			=	1.0.0.0
+Tests.Smoke.Refit.Local: Debug:       	Framework		=	.NET Core 3.1
+Tests.Smoke.Refit.Local: Debug:       	Runtime			=	CLR v4.0.30319
+Tests.Smoke.Refit.Local: Debug:       	Configuration	=	Debug
+Tests.Smoke.Refit.Local: Debug:       	Culture			=	neutral
+
+Tests.Smoke.Refit.Local: Information: 	Domain Assembly:	XamarinFiles.FancyLogger
+
+Tests.Smoke.Refit.Local: Debug:       	Version			=	3.2.1.0
+Tests.Smoke.Refit.Local: Debug:       	Framework		=	.NET Standard 2.0
+Tests.Smoke.Refit.Local: Debug:       	Runtime			=	CLR v4.0.30319
+Tests.Smoke.Refit.Local: Debug:       	Configuration	=	Release
+Tests.Smoke.Refit.Local: Debug:       	Culture			=	neutral
+
+Tests.Smoke.Refit.Local: Information: 	Reference Assembly:	XamarinFiles.PdHelpers.Refit
+
+Tests.Smoke.Refit.Local: Debug:       	Version			=	4.0.4.0
+Tests.Smoke.Refit.Local: Debug:       	Culture			=	neutral
+
+Tests.Smoke.Refit.Local: Information: 	Domain Assembly:	XamarinFiles.PdHelpers.Refit
+
+Tests.Smoke.Refit.Local: Debug:       	Version			=	4.1.0.0
+Tests.Smoke.Refit.Local: Debug:       	Framework		=	.NET Core 3.1
+Tests.Smoke.Refit.Local: Debug:       	Runtime			=	CLR v4.0.30319
+Tests.Smoke.Refit.Local: Debug:       	Configuration	=	Debug
+Tests.Smoke.Refit.Local: Debug:       	Culture			=	neutral
+
+Tests.Smoke.Refit.Local: Information: 	Run PdHelpers Refit Tests ##################################
+
+Tests.Smoke.Refit.Local: Information: 	Test Extracting Problem Reports ############################
+
+Tests.Smoke.Refit.Local: Information: 	Test Extracting Problem Report From Validation Problem Details
+
+Tests.Smoke.Refit.Local: Trace:       {
+  "Errors": {},
+  "Type": "about:blank",
+  "Status": 0,
+  "errors": {
+    "developerMessages": [
+      "Unexpected character encountered while parsing value: ,. Path \u0027userName\u0027, line 2, position 16."
+    ],
+    "userMessages": [
+      "Please send a properly-formatted JSON object and try again"
+    ]
+  },
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Invalid fields: userName",
+  "instance": "/api/authentication/login"
+}
+
+Tests.Smoke.Refit.Local: Error:       	Problem Variant: 	ValidationProblem
+Tests.Smoke.Refit.Local: Error:       	Problem Level: 		Error
+
+Tests.Smoke.Refit.Local: Error:       	Status: 		400 - Bad Request
+Tests.Smoke.Refit.Local: Error:       	Title: 			'Bad Request'
+Tests.Smoke.Refit.Local: Error:       	Detail: 		'Invalid fields: userName'
+Tests.Smoke.Refit.Local: Error:       	Instance URL: 	'/api/authentication/login'
+Tests.Smoke.Refit.Local: Error:       	Type Info: 		'https://tools.ietf.org/html/rfc7231#section-6.5.1'
+
+Tests.Smoke.Refit.Local: Debug:       	Messages:
+{
+  "developerMessages": [
+    "Unexpected character encountered while parsing value: ,. Path \u0027userName\u0027, line 2, position 16."
+  ],
+  "userMessages": [
+    "Please send a properly-formatted JSON object and try again"
+  ]
+}
+
+Tests.Smoke.Refit.Local: Debug:       400 - Bad Request:
+{
+  "Report.ProblemVariant": "ValidationProblem",
+  "Report.ProblemLevel": "Error",
+  "Response.StatusCode": "400",
+  "Response.StatusTitle": "Bad Request",
+  "Response.InstanceUri": "/api/authentication/login",
+  "Response.ProblemSummary": "Bad Request",
+  "Response.ProblemExplanation": "Invalid fields: userName"
+}
+
+Tests.Smoke.Refit.Local: Trace:       {
+  "Errors": {},
+  "Type": "about:blank",
+  "Status": 0,
+  "errors": {
+    "developerMessages": [
+      "Unexpected character encountered while parsing value: ,. Path \u0027userName\u0027, line 2, position 16."
+    ],
+    "userMessages": [
+      "Please send a properly-formatted JSON object and try again"
+    ]
+  },
+  "type": "https://tools.ietf.org/html/rfc7231#section-6.5.1",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Invalid fields: userName",
+  "instance": "/api/authentication/login"
+}
+
+Tests.Smoke.Refit.Local: Error:       	Problem Variant: 	ValidationProblem
+Tests.Smoke.Refit.Local: Error:       	Problem Level: 		Error
+
+Tests.Smoke.Refit.Local: Error:       	Status: 		400 - Bad Request
+Tests.Smoke.Refit.Local: Error:       	Title: 			'Bad Request'
+Tests.Smoke.Refit.Local: Error:       	Detail: 		'Invalid fields: userName'
+Tests.Smoke.Refit.Local: Error:       	Instance URL: 	'/api/authentication/login'
+Tests.Smoke.Refit.Local: Error:       	Type Info: 		'https://tools.ietf.org/html/rfc7231#section-6.5.1'
+
+Tests.Smoke.Refit.Local: Debug:       	Messages:
+{
+  "developerMessages": [
+    "Unexpected character encountered while parsing value: ,. Path \u0027userName\u0027, line 2, position 16."
+  ],
+  "userMessages": [
+    "Please send a properly-formatted JSON object and try again"
+  ]
+}
+
+Tests.Smoke.Refit.Local: Debug:       400 - Bad Request:
+{
+  "Report.ProblemVariant": "ValidationProblem",
+  "Report.ProblemLevel": "Error",
+  "Response.StatusCode": "400",
+  "Response.StatusTitle": "Bad Request",
+  "Response.InstanceUri": "/api/authentication/login",
+  "Response.ProblemSummary": "Bad Request",
+  "Response.ProblemExplanation": "Invalid fields: userName"
+}
+
+Tests.Smoke.Refit.Local: Information: 	Test Extracting Problem Report From Problem Details
+
+Tests.Smoke.Refit.Local: Trace:       {
+  "Errors": {},
+  "Type": "https://tools.ietf.org/html/rfc7235#section-3.1",
+  "Title": "Invalid Credentials",
+  "Status": 401,
+  "Detail": "Username and/or Password do not match",
+  "Instance": "/api/authentication/login",
+  "userMessages": [
+    "Please check your Username and Password and try again"
+  ]
+}
+
+Tests.Smoke.Refit.Local: Error:       	Problem Variant: 	GenericProblem
+Tests.Smoke.Refit.Local: Error:       	Problem Level: 		Error
+
+Tests.Smoke.Refit.Local: Error:       	Status: 		401 - Unauthorized
+Tests.Smoke.Refit.Local: Error:       	Title: 			'Invalid Credentials'
+Tests.Smoke.Refit.Local: Error:       	Detail: 		'Username and/or Password do not match'
+Tests.Smoke.Refit.Local: Error:       	Instance URL: 	'/api/authentication/login'
+Tests.Smoke.Refit.Local: Error:       	Type Info: 		'https://tools.ietf.org/html/rfc7235#section-3.1'
+
+Tests.Smoke.Refit.Local: Debug:       	Messages:
+{
+  "userMessages": [
+    "Please check your Username and Password and try again"
+  ]
+}
+
+Tests.Smoke.Refit.Local: Debug:       401 - Unauthorized:
+{
+  "Report.ProblemVariant": "GenericProblem",
+  "Report.ProblemLevel": "Error",
+  "Response.StatusCode": "401",
+  "Response.StatusTitle": "Unauthorized",
+  "Response.InstanceUri": "/api/authentication/login",
+  "Response.ProblemSummary": "Invalid Credentials",
+  "Response.ProblemExplanation": "Username and/or Password do not match"
+}
+
+Tests.Smoke.Refit.Local: Information: 	Test Creating Problem Report ###############################
+
+Tests.Smoke.Refit.Local: Information: 	Test Creating Problem Report For Error -----------
+
+Tests.Smoke.Refit.Local: Error:       	Problem Variant: 	ValidationProblem
+Tests.Smoke.Refit.Local: Error:       	Problem Level: 		Error
+
+Tests.Smoke.Refit.Local: Error:       	Source Assembly: 	'PdHelpers Smoke Tester'
+Tests.Smoke.Refit.Local: Error:       	Source Component: 	'Login Page'
+Tests.Smoke.Refit.Local: Error:       	Source Operation: 	'Authentication'
+
+Tests.Smoke.Refit.Local: Error:       	Status: 		400 - Bad Request
+Tests.Smoke.Refit.Local: Error:       	Title: 			'Invalid Credentials'
+Tests.Smoke.Refit.Local: Error:       	Detail: 		'Invalid fields: Username, Password'
+Tests.Smoke.Refit.Local: Error:       	Instance URL: 	'/api/authentication/login'
+Tests.Smoke.Refit.Local: Error:       	Type Info: 		'https://tools.ietf.org/html/rfc7231#section-6.5.1'
+
+Tests.Smoke.Refit.Local: Debug:       	Messages:
+{
+  "developerMessages": [
+    "The Username field is required.",
+    "The Password field is required."
+  ],
+  "userMessages": [
+    "Please check your Username and Password and try again"
+  ]
+}
+
+Tests.Smoke.Refit.Local: Debug:       400 - Bad Request:
+{
+  "Report.ProblemVariant": "ValidationProblem",
+  "Report.ProblemLevel": "Error",
+  "Source.Assembly": "PdHelpers Smoke Tester",
+  "Source.Component": "Login Page",
+  "Source.Operation": "Authentication",
+  "Response.StatusCode": "400",
+  "Response.StatusTitle": "Bad Request",
+  "Response.InstanceUri": "/api/authentication/login",
+  "Response.ProblemSummary": "Invalid Credentials",
+  "Response.ProblemExplanation": "Invalid fields: Username, Password"
+}
+
+Tests.Smoke.Refit.Local: Information: 	Test Creating Problem Report For Warning ---------
+
+Tests.Smoke.Refit.Local: Warning:     	Problem Variant: 	GenericProblem
+Tests.Smoke.Refit.Local: Warning:     	Problem Level: 		Warning
+
+Tests.Smoke.Refit.Local: Warning:     	Source Assembly: 	'PdHelpers Smoke Tester'
+Tests.Smoke.Refit.Local: Warning:     	Source Component: 	'Login Page'
+Tests.Smoke.Refit.Local: Warning:     	Source Operation: 	'Authentication'
+
+Tests.Smoke.Refit.Local: Warning:     	Status: 		401 - Unauthorized
+Tests.Smoke.Refit.Local: Warning:     	Title: 			'Invalid Credentials'
+Tests.Smoke.Refit.Local: Warning:     	Detail: 		'Username and/or Password do not match'
+Tests.Smoke.Refit.Local: Warning:     	Instance URL: 	'/api/authentication/login'
+Tests.Smoke.Refit.Local: Warning:     	Type Info: 		'https://tools.ietf.org/html/rfc7235#section-3.1'
+
+Tests.Smoke.Refit.Local: Debug:       	Messages:
+{
+  "userMessages": [
+    "Please check your Username and Password and try again"
+  ]
+}
+
+Tests.Smoke.Refit.Local: Debug:       401 - Unauthorized:
+{
+  "Report.ProblemVariant": "GenericProblem",
+  "Report.ProblemLevel": "Warning",
+  "Source.Assembly": "PdHelpers Smoke Tester",
+  "Source.Component": "Login Page",
+  "Source.Operation": "Authentication",
+  "Response.StatusCode": "401",
+  "Response.StatusTitle": "Unauthorized",
+  "Response.InstanceUri": "/api/authentication/login",
+  "Response.ProblemSummary": "Invalid Credentials",
+  "Response.ProblemExplanation": "Username and/or Password do not match"
+}
